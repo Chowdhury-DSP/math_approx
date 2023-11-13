@@ -1,0 +1,8 @@
+CPMAddPackage(
+    NAME matplotlib-cpp
+    GIT_REPOSITORY https://github.com/jatinchowdhury18/matplotlib-cpp
+    GIT_TAG main
+)
+
+add_executable(math_approx_plotter plotter.cpp)
+target_link_libraries(math_approx_plotter PRIVATE matplotlib-cpp math_approx)
