@@ -1,3 +1,8 @@
+if($ENV{CI})
+    message(STATUS "Configuring in CI, skipping plotter tool...")
+    return()
+endif()
+
 CPMAddPackage(
     NAME matplotlib-cpp
     GIT_REPOSITORY https://github.com/jatinchowdhury18/matplotlib-cpp
