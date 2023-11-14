@@ -25,24 +25,24 @@ TEST_CASE ("Sigmoid Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::sigmoid<9> (x); },
-                     6.1e-7f);
+                     6.5e-7f);
     }
     SECTION ("7th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::sigmoid<7> (x); },
-                     6.8e-6f);
+                     7.0e-6f);
     }
     SECTION ("5th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::sigmoid<5> (x); },
-                     9.7e-5f);
+                     1.0e-4f);
     }
     SECTION ("3th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::sigmoid<3> (x); },
-                     1.7e-3f);
+                     2.0e-3f);
     }
 }

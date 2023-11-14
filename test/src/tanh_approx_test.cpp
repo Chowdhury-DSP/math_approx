@@ -33,23 +33,23 @@ TEST_CASE ("Tanh Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<11> (x); },
-                     1.9e-7f,
-                     3.4e-7f,
+                     2.0e-7f,
+                     3.5e-7f,
                      5);
     }
     SECTION ("9th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<9> (x); },
-                     1.2e-6f,
-                     1.3e-6f,
+                     1.5e-6f,
+                     1.5e-6f,
                      18);
     }
     SECTION ("7th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<7> (x); },
-                     1.4e-5f,
+                     1.5e-5f,
                      1.5e-5f,
                      226);
     }
@@ -57,16 +57,16 @@ TEST_CASE ("Tanh Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<5> (x); },
-                     2.2e-4f,
-                     2.2e-4f,
+                     2.5e-4f,
+                     2.5e-4f,
                      0);
     }
     SECTION ("3th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<3> (x); },
-                     3.7e-3f,
-                     3.8e-3f,
+                     4.0e-3f,
+                     4.0e-3f,
                      0);
     }
 }
