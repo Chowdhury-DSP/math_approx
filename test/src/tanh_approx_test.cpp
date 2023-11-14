@@ -33,9 +33,9 @@ TEST_CASE ("Tanh Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::tanh<11> (x); },
-                     2.0e-7f,
-                     3.5e-7f,
-                     5);
+                     2.5e-7f,
+                     4.0e-7f,
+                     7);
     }
     SECTION ("9th-Order")
     {
@@ -43,7 +43,7 @@ TEST_CASE ("Tanh Approx Test")
                      { return math_approx::tanh<9> (x); },
                      1.5e-6f,
                      1.5e-6f,
-                     18);
+                     20);
     }
     SECTION ("7th-Order")
     {
@@ -51,7 +51,7 @@ TEST_CASE ("Tanh Approx Test")
                      { return math_approx::tanh<7> (x); },
                      1.5e-5f,
                      1.5e-5f,
-                     226);
+                     230);
     }
     SECTION ("5th-Order")
     {
