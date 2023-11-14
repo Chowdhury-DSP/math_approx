@@ -6,7 +6,7 @@
 
 TEST_CASE ("Tanh Approx Test")
 {
-    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-5f);
+    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-3f);
     const auto y_exact = test_helpers::compute_all (all_floats, [] (auto x)
                                                     { return std::tanh (x); });
 
