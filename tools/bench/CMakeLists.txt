@@ -10,3 +10,6 @@ target_link_libraries(tanh_approx_bench PRIVATE benchmark::benchmark math_approx
 
 add_executable(sigmoid_approx_bench sigmoid_bench.cpp)
 target_link_libraries(sigmoid_approx_bench PRIVATE benchmark::benchmark math_approx)
+
+add_executable(trig_approx_bench trig_bench.cpp)
+target_link_libraries(trig_approx_bench PRIVATE benchmark::benchmark math_approx)

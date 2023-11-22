@@ -42,4 +42,4 @@ jobs:
       - name: CMake Test
         run: |
           ctest --test-dir build -C RelWithDebInfo --show-only
-          ctest --test-dir build -C RelWithDebInfo -j4 --output-on-failure
+          ctest --test-dir build -C RelWithDebInfo -j2 --output-on-failure

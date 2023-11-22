@@ -99,11 +99,16 @@ T cos_mpi_pi (T x)
 
     using S = scalar_of_t<T>;
     static constexpr auto pi = static_cast<S> (M_PI);
-    static constexpr auto pi_o_2 = pi * (S) 0.5;;
+    static constexpr auto pi_sq = pi * pi;
+    static constexpr auto pi_o_2 = pi * (S) 0.5;
 
-    const auto hpmx = (x > (S) 0 ? (S) 1 : (S) -1) * pi_o_2 - x;
-    const auto thpmx = (x > (S) 0 ? (S) 3 : (S) -3) * pi_o_2 - x;
-    const auto nhpmx = (x > (S) 0 ? (S) -1 : (S) 1) * pi_o_2 - x;
+    using std::abs;
+#if defined(XSIMD_HPP)
+    using xsimd::abs;
+#endif
+    x = abs (x);
+
+    const auto hpmx = pi_o_2 - x;
     const auto hpmx_sq = hpmx * hpmx;
 
     T x_poly {};
@@ -114,7 +119,7 @@ T cos_mpi_pi (T x)
     else if constexpr (order == 5)
         x_poly = sin_detail::sin_poly_5 (hpmx, hpmx_sq);
 
-    return thpmx * nhpmx * (x > (S) 0 ? (S) -1 : (S) 1) * x_poly;
+    return (pi_sq - hpmx_sq) * x_poly;
 }
 
 template <int order, typename T>
