@@ -57,19 +57,17 @@ void plot_function (std::span<const float> all_floats,
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-10.0f, 10.0f);
+    const auto range = std::make_pair (-3.141f, 3.141f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
     const auto y_exact = test_helpers::compute_all (all_floats, [] (float x)
-                                                    { return 1.0f / (1.0f + std::exp (-x)); });
+                                                    { return std::cos (x); });
 
-    plot_error (
-        all_floats,
-        y_exact,
-        [] (float x)
-        { return math_approx::sigmoid_exp<3> (x); },
-        "Sigmoid-Exp-5");
+    // // plot_error (all_floats, y_exact, [] (float x) { return math_approx::sin<5> (x); }, "Sin-5");
+    // // plot_error (all_floats, y_exact, [] (float x) { return math_approx::sin<7> (x); }, "Sin-7");
+    plot_ulp_error (all_floats, y_exact, [] (float x) { return math_approx::cos_mpi_pi<9> (x); }, "Cos-9");
+    // plot_function (all_floats, [] (float x) { return math_approx::cos_mpi_pi<9> (x); }, "Cos-9");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

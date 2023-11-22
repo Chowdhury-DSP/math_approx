@@ -36,6 +36,12 @@ T rsqrt (T x)
     //    return x * r;
 }
 
+template <typename T>
+T select (bool q, T t, T f)
+{
+    return q ? t : f;
+}
+
 #if defined(XSIMD_HPP)
 template <typename T>
 struct scalar_of<xsimd::batch<T>>
@@ -53,6 +59,12 @@ xsimd::batch<T> rsqrt (xsimd::batch<T> x)
     x += (S) -3;
     r *= (S) -0.5;
     return x * r;
+}
+
+template <typename T>
+xsimd::batch<T> select (xsimd::batch_bool<T> q, xsimd::batch<T> t, xsimd::batch<T> f)
+{
+    return xsimd::select (q, t, f);
 }
 #endif
 } // namespace math_approx

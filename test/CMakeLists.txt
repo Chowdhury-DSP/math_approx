@@ -30,3 +30,5 @@ endfunction(setup_catch_test)
 
 setup_catch_test(tanh_approx_test)
 setup_catch_test(sigmoid_approx_test)
+setup_catch_test(sin_approx_test)
+setup_catch_test(cos_approx_test)

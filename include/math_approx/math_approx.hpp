@@ -8,3 +8,4 @@ namespace math_approx
 
 #include "src/tanh_approx.hpp"
 #include "src/sigmoid_approx.hpp"
+#include "src/sin_approx.hpp"

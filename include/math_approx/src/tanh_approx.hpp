@@ -67,7 +67,7 @@ namespace tanh_detail
 template <int order, typename T>
 T tanh (T x)
 {
-    static_assert (order % 2 == 1 && order <= 11 && order >= 3, "Order must e an odd number within [3, 9]");
+    static_assert (order % 2 == 1 && order <= 11 && order >= 3, "Order must e an odd number within [3, 11]");
 
     T x_poly {};
     if constexpr (order == 11)
