@@ -21,7 +21,7 @@ TEST_CASE ("Sine Approx Test")
         const auto error = test_helpers::compute_error (y_exact, y_approx);
         const auto max_error = test_helpers::abs_max (error);
 
-        // std::cout << max_error << std::endl;
+        std::cout << max_error << std::endl;
         REQUIRE (std::abs (max_error) < err_bound);
     };
 
@@ -62,7 +62,7 @@ TEST_CASE ("Cosine Approx Test")
         const auto error = test_helpers::compute_error (y_exact, y_approx);
         const auto max_error = test_helpers::abs_max (error);
 
-        // std::cout << max_error << std::endl;
+        std::cout << max_error << std::endl;
         REQUIRE (std::abs (max_error) < err_bound);
     };
 

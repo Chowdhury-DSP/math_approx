@@ -9,3 +9,4 @@ namespace math_approx
 #include "src/tanh_approx.hpp"
 #include "src/sigmoid_approx.hpp"
 #include "src/trig_approx.hpp"
+#include "src/pow_approx.hpp"
