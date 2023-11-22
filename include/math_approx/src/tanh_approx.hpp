@@ -11,50 +11,55 @@ namespace tanh_detail
     template <typename T>
     T tanh_poly_11 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_9_11 = (T) 2.63661358122e-6 + (T) 3.33765558362e-8 * x_sq;
-        const auto y_7_9_11 = (T) 0.000199027336899 + y_9_11 * x_sq;
-        const auto y_5_7_9_11 = (T) 0.00833223857843 + y_7_9_11 * x_sq;
-        const auto y_3_5_7_9_11 = (T) 0.166667159320 + y_5_7_9_11 * x_sq;
-        const auto y_1_3_5_7_9_11 = (T) 1 + y_3_5_7_9_11 * x_sq;
+        const auto y_9_11 = (S) 2.63661358122e-6 + (S) 3.33765558362e-8 * x_sq;
+        const auto y_7_9_11 = (S) 0.000199027336899 + y_9_11 * x_sq;
+        const auto y_5_7_9_11 = (S) 0.00833223857843 + y_7_9_11 * x_sq;
+        const auto y_3_5_7_9_11 = (S) 0.166667159320 + y_5_7_9_11 * x_sq;
+        const auto y_1_3_5_7_9_11 = (S) 1 + y_3_5_7_9_11 * x_sq;
         return x * y_1_3_5_7_9_11;
     }
 
     template <typename T>
     T tanh_poly_9 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_7_9 = (T) 0.000192218110330 + (T) 3.54808622170e-6 * x_sq;
-        const auto y_5_7_9 = (T) 0.00834777254865 + y_7_9 * x_sq;
-        const auto y_3_5_7_9 = (T) 0.166658873283 + y_5_7_9 * x_sq;
-        const auto y_1_3_5_7_9 = (T) 1 + y_3_5_7_9 * x_sq;
+        const auto y_7_9 = (S) 0.000192218110330 + (S) 3.54808622170e-6 * x_sq;
+        const auto y_5_7_9 = (S) 0.00834777254865 + y_7_9 * x_sq;
+        const auto y_3_5_7_9 = (S) 0.166658873283 + y_5_7_9 * x_sq;
+        const auto y_1_3_5_7_9 = (S) 1 + y_3_5_7_9 * x_sq;
         return x * y_1_3_5_7_9;
     }
 
     template <typename T>
     T tanh_poly_7 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_5_7 = (T) 0.00818199927912 + (T) 0.000243153287690 * x_sq;
-        const auto y_3_5_7 = (T) 0.166769941467 + y_5_7 * x_sq;
-        const auto y_1_3_5_7 = (T) 1 + y_3_5_7 * x_sq;
+        const auto y_5_7 = (S) 0.00818199927912 + (S) 0.000243153287690 * x_sq;
+        const auto y_3_5_7 = (S) 0.166769941467 + y_5_7 * x_sq;
+        const auto y_1_3_5_7 = (S) 1 + y_3_5_7 * x_sq;
         return x * y_1_3_5_7;
     }
 
     template <typename T>
     T tanh_poly_5 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_3_5 = (T) 0.165326984031 + (T) 0.00970240200826 * x_sq;
-        const auto y_1_3_5 = (T) 1 + y_3_5 * x_sq;
+        const auto y_3_5 = (S) 0.165326984031 + (S) 0.00970240200826 * x_sq;
+        const auto y_1_3_5 = (S) 1 + y_3_5 * x_sq;
         return x * y_1_3_5;
     }
 
     template <typename T>
     T tanh_poly_3 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_1_3 = (T) 1 + (T) 0.183428244899 * x_sq;
+        const auto y_1_3 = (S) 1 + (S) 0.183428244899 * x_sq;
         return x * y_1_3;
     }
 } // namespace tanh_detail
@@ -76,6 +81,7 @@ T tanh (T x)
     else if constexpr (order == 3)
         x_poly = tanh_detail::tanh_poly_3 (x);
 
-    return x_poly * rsqrt (x_poly * x_poly + (T) 1);
+    using S = scalar_of_t<T>;
+    return x_poly * rsqrt (x_poly * x_poly + (S) 1);
 }
 } // namespace math_approx

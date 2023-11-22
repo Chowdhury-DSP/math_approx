@@ -14,6 +14,14 @@
 namespace math_approx
 {
 template <typename T>
+struct scalar_of
+{
+    using type = T;
+};
+template <typename T>
+using scalar_of_t = typename scalar_of<T>::type;
+
+template <typename T>
 T rsqrt (T x)
 {
     // sqrtss followed by divss... this seems to measure a bit faster than the rsqrtss plus NR iteration below
@@ -30,13 +38,20 @@ T rsqrt (T x)
 
 #if defined(XSIMD_HPP)
 template <typename T>
+struct scalar_of<xsimd::batch<T>>
+{
+    using type = T;
+};
+
+template <typename T>
 xsimd::batch<T> rsqrt (xsimd::batch<T> x)
 {
+    using S = scalar_of_t<T>;
     auto r = xsimd::rsqrt (x);
     x *= r;
     x *= r;
-    x += -3.0f;
-    r *= -0.5f;
+    x += (S) -3;
+    r *= (S) -0.5;
     return x * r;
 }
 #endif

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "basic_math.hpp"
-// #include "pow_approx.hpp"
 
 namespace math_approx
 {
@@ -12,38 +11,42 @@ namespace sigmoid_detail
     template <typename T>
     T sig_poly_9 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_7_9 = (T) 1.50024356624e-6 + (T) 6.92468584642e-9 * x_sq;
-        const auto y_5_7_9 = (T) 0.000260923534301 + y_7_9 * x_sq;
-        const auto y_3_5_7_9 = (T) 0.0208320229264 + y_5_7_9 * x_sq;
-        const auto y_1_3_5_7_9 = (T) 0.5 + y_3_5_7_9 * x_sq;
+        const auto y_7_9 = (S) 1.50024356624e-6 + (S) 6.92468584642e-9 * x_sq;
+        const auto y_5_7_9 = (S) 0.000260923534301 + y_7_9 * x_sq;
+        const auto y_3_5_7_9 = (S) 0.0208320229264 + y_5_7_9 * x_sq;
+        const auto y_1_3_5_7_9 = (S) 0.5 + y_3_5_7_9 * x_sq;
         return x * y_1_3_5_7_9;
     }
 
     template <typename T>
     T sig_poly_7 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_5_7 = (T) 0.000255174491559 + (T) 1.90805380557e-6 * x_sq;
-        const auto y_3_5_7 = (T) 0.0208503675870 + y_5_7 * x_sq;
-        const auto y_1_3_5_7 = (T) 0.5 + y_3_5_7 * x_sq;
+        const auto y_5_7 = (S) 0.000255174491559 + (S) 1.90805380557e-6 * x_sq;
+        const auto y_3_5_7 = (S) 0.0208503675870 + y_5_7 * x_sq;
+        const auto y_1_3_5_7 = (S) 0.5 + y_3_5_7 * x_sq;
         return x * y_1_3_5_7;
     }
 
     template <typename T>
     T sig_poly_5 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_3_5 = (T) 0.0206108521251 + (T) 0.000307906311109 * x_sq;
-        const auto y_1_3_5 = (T) 0.5 + y_3_5 * x_sq;
+        const auto y_3_5 = (S) 0.0206108521251 + (S) 0.000307906311109 * x_sq;
+        const auto y_1_3_5 = (S) 0.5 + y_3_5 * x_sq;
         return x * y_1_3_5;
     }
 
     template <typename T>
     T sig_poly_3 (T x)
     {
+        using S = scalar_of_t<T>;
         const auto x_sq = x * x;
-        const auto y_1_3 = (T) 0.5 + (T) 0.0233402955195 * x_sq;
+        const auto y_1_3 = (S) 0.5 + (S) 0.0233402955195 * x_sq;
         return x * y_1_3;
     }
 } // namespace sigmoid_detail
@@ -63,7 +66,8 @@ T sigmoid (T x)
     else if constexpr (order == 3)
         x_poly = sigmoid_detail::sig_poly_3 (x);
 
-    return (T) 0.5 * x_poly * rsqrt (x_poly * x_poly + (T) 1) + (T) 0.5;
+    using S = scalar_of_t<T>;
+    return (S) 0.5 * x_poly * rsqrt (x_poly * x_poly + (S) 1) + (S) 0.5;
 }
 
 // So far this has tested slower than the above approx (for equivalent error),
