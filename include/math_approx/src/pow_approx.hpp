@@ -2,8 +2,6 @@
 
 #include "basic_math.hpp"
 
-// Everything in this file is still WIP!
-
 namespace math_approx
 {
 namespace pow_detail

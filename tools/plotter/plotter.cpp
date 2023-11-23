@@ -59,15 +59,16 @@ void plot_function (std::span<const float> all_floats,
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-10.0f, 10.0f);
+    const auto range = std::make_pair (0.01f, 10.0f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all (all_floats, FLOAT_FUNC(std::exp2));
+    const auto y_exact = test_helpers::compute_all (all_floats, FLOAT_FUNC(std::log));
 
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<4>), "Exp2-4");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<5>), "Exp2-5");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<6>), "Exp2-6");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<4>), "Exp2-4");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<5>), "Exp2-5");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<6>), "Exp2-6");
+    plot_error (all_floats, y_exact, FLOAT_FUNC (math_approx::log<6>), "Log-6");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);
