@@ -52,6 +52,9 @@ namespace log_detail
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-aliasing" // these methods require some type-punning
+
 /** approximation for log(Base, x) (32-bit) */
 template <typename Base, int order>
 float log (float x)
@@ -85,30 +88,32 @@ double log (double x)
 template <typename Base, int order>
 xsimd::batch<float> log (xsimd::batch<float> x)
 {
-    const auto vi = reinterpret_cast<int32_t&> (x);
+    const auto vi = reinterpret_cast<xsimd::batch<int32_t>&> (x); // NOSONAR
     const auto ex = vi & 0x7f800000;
     const auto e = (ex >> 23) - 127;
     const auto vfi = (vi - ex) | 0x3f800000;
-    const auto vf = reinterpret_cast<const float&> (vfi);
+    const auto vf = reinterpret_cast<const xsimd::batch<float>&> (vfi); // NOSONAR
 
     static constexpr auto log2_base_r = 1.0f / Base::log2_base;
-    return log2_base_r * ((float) e + log_detail::log2_approx<xsimd::batch<float>, order> (vf));
+    return log2_base_r * (xsimd::to_float (e) + log_detail::log2_approx<xsimd::batch<float>, order> (vf));
 }
 
 /** approximation for pow(Base, x) (64-bit SIMD) */
 template <typename Base, int order>
 xsimd::batch<double> log (xsimd::batch<double> x)
 {
-    const auto vi = reinterpret_cast<int64_t&> (x);
+    const auto vi = reinterpret_cast<xsimd::batch<int64_t>&> (x); // NOSONAR
     const auto ex = vi & 0x7ff0000000000000;
     const auto e = (ex >> 52) - 1023;
     const auto vfi = (vi - ex) | 0x3ff0000000000000;
-    const auto vf = reinterpret_cast<const double&> (vfi);
+    const auto vf = reinterpret_cast<const xsimd::batch<double>&> (vfi); // NOSONAR
 
     static constexpr auto log2_base_r = 1.0 / Base::log2_base;
-    return log2_base_r * ((double) e + log_detail::log2_approx<xsimd::batch<double>, order> (vf));
+    return log2_base_r * (xsimd::to_float (e) + log_detail::log2_approx<xsimd::batch<double>, order> (vf));
 }
 #endif
+
+#pragma clang diagnostic pop
 
 template <int order, typename T>
 T log (T x)

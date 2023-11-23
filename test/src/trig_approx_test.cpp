@@ -11,7 +11,7 @@ TEST_CASE ("Sine Approx Test")
 #else
     const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
 #endif
-    const auto y_exact = test_helpers::compute_all ({ all_floats.begin(), all_floats.end() }, [] (auto x)
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::sin (x); });
 
     const auto test_approx = [&all_floats, &y_exact] (auto&& f_approx, float err_bound)
@@ -52,7 +52,7 @@ TEST_CASE ("Cosine Approx Test")
 #else
     const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
 #endif
-    const auto y_exact = test_helpers::compute_all ({ all_floats.begin(), all_floats.end() }, [] (auto x)
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::cos (x); });
 
     const auto test_approx = [&all_floats, &y_exact] (auto&& f_approx, float err_bound)
