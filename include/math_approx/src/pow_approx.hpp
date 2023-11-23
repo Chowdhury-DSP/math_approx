@@ -46,7 +46,10 @@ namespace pow_detail
             const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
             return (S) 1 + x_1_2_3_4_5_6 * x;
         }
-        return {};
+        else
+        {
+            return {};
+        }
     }
 
     template <typename T>

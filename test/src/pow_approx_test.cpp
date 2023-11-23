@@ -60,3 +60,83 @@ TEST_CASE ("Exp Approx Test")
                      0);
     }
 }
+
+TEST_CASE ("Exp2 Approx Test")
+{
+#if ! defined(WIN32)
+    static const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-3f);
+#else
+    static const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+#endif
+    const auto y_exact = test_helpers::compute_all (all_floats, [] (auto x)
+                                                    { return std::exp2 (x); });
+
+    SECTION ("6th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp2<6> (x); },
+                     3.0e-7f,
+                     4);
+    }
+    SECTION ("5th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp2<5> (x); },
+                     4.0e-7f,
+                     5);
+    }
+    SECTION ("4th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp2<4> (x); },
+                     4.0e-6f,
+                     70);
+    }
+    SECTION ("3th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp2<3> (x); },
+                     1.5e-4f,
+                     0);
+    }
+}
+
+TEST_CASE ("Exp10 Approx Test")
+{
+#if ! defined(WIN32)
+    static const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-3f);
+#else
+    static const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+#endif
+    const auto y_exact = test_helpers::compute_all (all_floats, [] (auto x)
+                                                    { return std::pow (10.0f, x); });
+
+    SECTION ("6th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp10<6> (x); },
+                     2.0e-6f,
+                     32);
+    }
+    SECTION ("5th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp10<5> (x); },
+                     2.5e-6f,
+                     35);
+    }
+    SECTION ("4th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp10<4> (x); },
+                     5.5e-6f,
+                     90);
+    }
+    SECTION ("3th-Order")
+    {
+        test_approx (all_floats, y_exact, [] (auto x)
+                     { return math_approx::exp10<3> (x); },
+                     1.5e-4f,
+                     0);
+    }
+}
