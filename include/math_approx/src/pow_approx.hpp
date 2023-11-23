@@ -82,7 +82,21 @@ float pow (float x)
     const auto f = x - (float) l;
     const auto vi = (l + 127) << 23;
 
-    return reinterpret_cast<const float&> (vi) * pow_detail::pow2_approx<float, order> (f); // NOSONAR
+    return reinterpret_cast<const float&> (vi) * pow_detail::pow2_approx<float, order> (f);
+}
+
+/** approximation for pow(Base, x) (64-bit) */
+template <typename Base, int order>
+double pow (double x)
+{
+    x = std::max (-1022.0, Base::log2_base * x);
+
+    const auto xi = (int64_t) x;
+    const auto l = x < 0.0 ? xi - 1 : xi;
+    const auto d = x - (double) l;
+    const auto vi = (l + 1023) << 52;
+
+    return reinterpret_cast<const double&> (vi) * pow_detail::pow2_approx<double, order> (d);
 }
 
 template <int order, typename T>
