@@ -54,20 +54,21 @@ void plot_function (std::span<const float> all_floats,
     plt::named_plot<float, float> (name, all_floats, y_approx);
 }
 
+#define FLOAT_FUNC(func) [] (float x) { return func (x); }
+
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-3.141f, 3.141f);
+    const auto range = std::make_pair (0.01f, 10.0f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all (all_floats, [] (float x)
-                                                    { return std::cos (x); });
+    const auto y_exact = test_helpers::compute_all (all_floats, FLOAT_FUNC(std::log));
 
-    // // plot_error (all_floats, y_exact, [] (float x) { return math_approx::sin<5> (x); }, "Sin-5");
-    // // plot_error (all_floats, y_exact, [] (float x) { return math_approx::sin<7> (x); }, "Sin-7");
-    // plot_ulp_error (all_floats, y_exact, [] (float x) { return math_approx::cos_mpi_pi<9> (x); }, "Cos-9");
-    plot_function (all_floats, [] (float x) { return math_approx::cos_mpi_pi<9> (x); }, "Cos-9");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<4>), "Exp2-4");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<5>), "Exp2-5");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC(math_approx::exp2<6>), "Exp2-6");
+    plot_error (all_floats, y_exact, FLOAT_FUNC (math_approx::log<6>), "Log-6");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

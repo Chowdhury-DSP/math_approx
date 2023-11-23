@@ -10,29 +10,30 @@
 
 namespace test_helpers
 {
+template <typename T = float>
 inline auto all_32_bit_floats (float begin, float end, float tol = 1.0e-10f)
 {
-    std::vector<float> vec;
+    std::vector<T> vec;
     vec.reserve (1 << 20);
-    begin = vec.emplace_back (begin);
+    begin = (float) vec.emplace_back (static_cast<T> (begin));
     while (begin < end)
     {
         if (std::abs (begin) < tol)
         {
-            begin = vec.emplace_back (0.0f);
-            begin = vec.emplace_back (tol);
+            begin = (float) vec.emplace_back (static_cast<T> (0));
+            begin = (float) vec.emplace_back (static_cast<T> (tol));
         }
-        begin = vec.emplace_back (std::nextafter (begin, end));
+        begin = (float) vec.emplace_back (static_cast<T> (std::nextafter (begin, end)));
     }
 
     return vec;
 }
 
-template <typename F>
-auto compute_all (std::span<const float> all_floats,
+template <typename T = float, typename F>
+auto compute_all (std::span<const T> all_floats,
                   F&& f)
 {
-    std::vector<float> y;
+    std::vector<T> y;
     y.resize (all_floats.size());
     for (size_t i = 0; i < all_floats.size(); ++i)
         y[i] = f (all_floats[i]);
@@ -40,18 +41,20 @@ auto compute_all (std::span<const float> all_floats,
     return y;
 }
 
-inline std::vector<float> compute_error (std::span<const float> actual, std::span<const float> approx)
+template <typename T = float>
+inline std::vector<T> compute_error (std::span<const T> actual, std::span<const T> approx)
 {
-    std::vector<float> err;
+    std::vector<T> err;
     err.resize (actual.size());
     for (size_t i = 0; i < actual.size(); ++i)
         err[i] = (actual[i] - approx[i]);
     return err;
 }
 
-inline std::vector<float> compute_rel_error (std::span<const float> actual, std::span<const float> approx)
+template <typename T = float>
+inline std::vector<T> compute_rel_error (std::span<const T> actual, std::span<const T> approx)
 {
-    std::vector<float> err;
+    std::vector<T> err;
     err.resize (actual.size());
     for (size_t i = 0; i < actual.size(); ++i)
         err[i] = (actual[i] - approx[i]) / actual[i];
@@ -116,7 +119,8 @@ inline auto compute_ulp_error (std::span<const float> actual, std::span<const fl
     return err;
 }
 
-inline float abs_max (std::span<const float> x)
+template <typename T = float>
+inline T abs_max (std::span<const T> x)
 {
     const auto [min, max] = std::minmax_element (x.begin(), x.end());
 

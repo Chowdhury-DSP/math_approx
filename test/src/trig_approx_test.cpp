@@ -11,17 +11,17 @@ TEST_CASE ("Sine Approx Test")
 #else
     const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
 #endif
-    const auto y_exact = test_helpers::compute_all (all_floats, [] (auto x)
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::sin (x); });
 
     const auto test_approx = [&all_floats, &y_exact] (auto&& f_approx, float err_bound)
     {
-        const auto y_approx = test_helpers::compute_all (all_floats, f_approx);
+        const auto y_approx = test_helpers::compute_all<float> (all_floats, f_approx);
 
-        const auto error = test_helpers::compute_error (y_exact, y_approx);
-        const auto max_error = test_helpers::abs_max (error);
+        const auto error = test_helpers::compute_error<float> (y_exact, y_approx);
+        const auto max_error = test_helpers::abs_max<float> (error);
 
-        // std::cout << max_error << std::endl;
+        std::cout << max_error << std::endl;
         REQUIRE (std::abs (max_error) < err_bound);
     };
 
@@ -52,17 +52,17 @@ TEST_CASE ("Cosine Approx Test")
 #else
     const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
 #endif
-    const auto y_exact = test_helpers::compute_all (all_floats, [] (auto x)
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::cos (x); });
 
     const auto test_approx = [&all_floats, &y_exact] (auto&& f_approx, float err_bound)
     {
-        const auto y_approx = test_helpers::compute_all (all_floats, f_approx);
+        const auto y_approx = test_helpers::compute_all<float> (all_floats, f_approx);
 
-        const auto error = test_helpers::compute_error (y_exact, y_approx);
-        const auto max_error = test_helpers::abs_max (error);
+        const auto error = test_helpers::compute_error<float> (y_exact, y_approx);
+        const auto max_error = test_helpers::abs_max<float> (error);
 
-        // std::cout << max_error << std::endl;
+        std::cout << max_error << std::endl;
         REQUIRE (std::abs (max_error) < err_bound);
     };
 
