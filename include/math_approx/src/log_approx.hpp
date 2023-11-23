@@ -85,4 +85,16 @@ T log (T x)
 {
     return log<pow_detail::BaseE<scalar_of_t<T>>, order> (x);
 }
+
+template <int order, typename T>
+T log2 (T x)
+{
+    return log<pow_detail::Base2<scalar_of_t<T>>, order> (x);
+}
+
+template <int order, typename T>
+T log10 (T x)
+{
+    return log<pow_detail::Base10<scalar_of_t<T>>, order> (x);
+}
 }
