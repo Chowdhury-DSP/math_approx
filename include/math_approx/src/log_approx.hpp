@@ -52,8 +52,10 @@ namespace log_detail
     }
 }
 
+#if defined(__GNUC__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wstrict-aliasing" // these methods require some type-punning
+#endif
 
 /** approximation for log(Base, x) (32-bit) */
 template <typename Base, int order>
@@ -113,7 +115,9 @@ xsimd::batch<double> log (xsimd::batch<double> x)
 }
 #endif
 
-#pragma clang diagnostic pop
+#if defined(__GNUC__)
+#pragma clang diagnostic pop // end ignore strict-aliasing
+#endif
 
 template <int order, typename T>
 T log (T x)
