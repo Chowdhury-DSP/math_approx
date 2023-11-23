@@ -69,6 +69,11 @@ namespace pow_detail
     };
 }
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing" // these methods require some type-punning
+#endif
+
 /** approximation for pow(Base, x) (32-bit) */
 template <typename Base, int order>
 float pow (float x)
@@ -125,6 +130,10 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
 
     return reinterpret_cast<const xsimd::batch<double>&> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order> (d);
 }
+#endif
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop // end ignore strict-aliasing warnings
 #endif
 
 template <int order, typename T>
