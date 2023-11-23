@@ -55,6 +55,7 @@ namespace log_detail
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing" // these methods require some type-punning
+#pragma GCC diagnostic ignored "-Wuninitialized"
 #endif
 
 /** approximation for log(Base, x) (32-bit) */
