@@ -56,11 +56,11 @@ namespace log_detail
 template <typename Base, int order>
 float log (float x)
 {
-    const auto vi = reinterpret_cast<int32_t&> (x); // NOSONAR
+    const auto vi = reinterpret_cast<int32_t&> (x);
     const auto ex = vi & 0x7f800000;
     const auto e = (ex >> 23) - 127;
     const auto vfi = (vi - ex) | 0x3f800000;
-    const auto vf = reinterpret_cast<const float&> (vfi); // NOSONAR
+    const auto vf = reinterpret_cast<const float&> (vfi);
 
     static constexpr auto log2_base_r = 1.0f / Base::log2_base;
     return log2_base_r * ((float) e + log_detail::log2_approx<float, order> (vf));
@@ -70,15 +70,45 @@ float log (float x)
 template <typename Base, int order>
 double log (double x)
 {
-    const auto vi = reinterpret_cast<int64_t&> (x); // NOSONAR
+    const auto vi = reinterpret_cast<int64_t&> (x);
     const auto ex = vi & 0x7ff0000000000000;
     const auto e = (ex >> 52) - 1023;
     const auto vfi = (vi - ex) | 0x3ff0000000000000;
-    const auto vf = reinterpret_cast<const double&> (vfi); // NOSONAR
+    const auto vf = reinterpret_cast<const double&> (vfi);
 
     static constexpr auto log2_base_r = 1.0 / Base::log2_base;
     return log2_base_r * ((double) e + log_detail::log2_approx<double, order> (vf));
 }
+
+#if defined(XSIMD_HPP)
+/** approximation for pow(Base, x) (32-bit SIMD) */
+template <typename Base, int order>
+xsimd::batch<float> log (xsimd::batch<float> x)
+{
+    const auto vi = reinterpret_cast<int32_t&> (x);
+    const auto ex = vi & 0x7f800000;
+    const auto e = (ex >> 23) - 127;
+    const auto vfi = (vi - ex) | 0x3f800000;
+    const auto vf = reinterpret_cast<const float&> (vfi);
+
+    static constexpr auto log2_base_r = 1.0f / Base::log2_base;
+    return log2_base_r * ((float) e + log_detail::log2_approx<xsimd::batch<float>, order> (vf));
+}
+
+/** approximation for pow(Base, x) (64-bit SIMD) */
+template <typename Base, int order>
+xsimd::batch<double> log (xsimd::batch<double> x)
+{
+    const auto vi = reinterpret_cast<int64_t&> (x);
+    const auto ex = vi & 0x7ff0000000000000;
+    const auto e = (ex >> 52) - 1023;
+    const auto vfi = (vi - ex) | 0x3ff0000000000000;
+    const auto vf = reinterpret_cast<const double&> (vfi);
+
+    static constexpr auto log2_base_r = 1.0 / Base::log2_base;
+    return log2_base_r * ((double) e + log_detail::log2_approx<xsimd::batch<double>, order> (vf));
+}
+#endif
 
 template <int order, typename T>
 T log (T x)

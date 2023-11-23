@@ -97,6 +97,36 @@ double pow (double x)
     return reinterpret_cast<const double&> (vi) * pow_detail::pow2_approx<double, order> (d);
 }
 
+#if defined(XSIMD_HPP)
+/** approximation for pow(Base, x) (32-bit SIMD) */
+template <typename Base, int order>
+xsimd::batch<float> pow (xsimd::batch<float> x)
+{
+    x = xsimd::max (xsimd::broadcast (-126.0f), Base::log2_base * x);
+
+    const auto xi = xsimd::to_int (x);
+    const auto l = xsimd::select (xsimd::batch_bool_cast<int32_t> (x < 0.0f), xi - 1, xi);
+    const auto f = x - xsimd::to_float (l);
+    const auto vi = (l + 127) << 23;
+
+    return reinterpret_cast<const xsimd::batch<float>&> (vi) * pow_detail::pow2_approx<xsimd::batch<float>, order> (f);
+}
+
+/** approximation for pow(Base, x) (64-bit SIMD) */
+template <typename Base, int order>
+xsimd::batch<double> pow (xsimd::batch<double> x)
+{
+    x = xsimd::max (-1022.0, Base::log2_base * x);
+
+    const auto xi = xsimd::to_int (x);
+    const auto l = xsimd::select (xsimd::batch_bool_cast<int64_t> (x < 0.0), xi - 1, xi);
+    const auto d = x - xsimd::to_float (l);
+    const auto vi = (l + 1023) << 52;
+
+    return reinterpret_cast<const xsimd::batch<double>&> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order> (d);
+}
+#endif
+
 template <int order, typename T>
 T exp (T x)
 {

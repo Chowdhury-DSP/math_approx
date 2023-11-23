@@ -16,3 +16,6 @@ target_link_libraries(trig_approx_bench PRIVATE benchmark::benchmark math_approx
 
 add_executable(pow_approx_bench pow_bench.cpp)
 target_link_libraries(pow_approx_bench PRIVATE benchmark::benchmark math_approx)
+
+add_executable(log_approx_bench log_bench.cpp)
+target_link_libraries(log_approx_bench PRIVATE benchmark::benchmark math_approx)
