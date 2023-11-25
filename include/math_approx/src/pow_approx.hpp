@@ -7,46 +7,86 @@ namespace math_approx
 namespace pow_detail
 {
     /** approximation for 2^x, optimized on the range [0, 1] */
-    template <typename T, int order>
+    template <typename T, int order, bool C1_continuous>
     constexpr T pow2_approx (T x)
     {
         static_assert (order >= 3 && order <= 6);
         using S = scalar_of_t<T>;
 
         const auto x_sq = x * x;
-        if constexpr (order == 3)
+        if constexpr (C1_continuous)
         {
-            const auto x_2_3 = (S) 0.226307586882 + (S) 0.0782680256330 * x;
-            const auto x_0_1 = (S) 1 + (S) 0.695424387485 * x;
-            return x_0_1 + x_2_3 * x_sq;
-        }
-        else if constexpr (order == 4)
-        {
-            const auto x_3_4 = (S) 0.0520324008177 + (S) 0.0135557244044 * x;
-            const auto x_1_2 = (S) 0.693032120001 + (S) 0.241379754777 * x;
-            const auto x_1_2_3_4 = x_1_2 + x_3_4 * x_sq;
-            return (S) 1 + x_1_2_3_4 * x;
-        }
-        else if constexpr (order == 5)
-        {
-            const auto x_4_5 = (S) 0.00899009909264 + (S) 0.00187839071291 * x;
-            const auto x_2_3 = (S) 0.240156326598 + (S) 0.0558229130202 * x;
-            const auto x_2_3_4_5 = x_2_3 + x_4_5 * x_sq;
-            const auto x_0_1 = (S) 1 + (S) 0.693152270576 * x;
-            return x_0_1 + x_2_3_4_5 * x_sq;
-        }
-        else if constexpr (order == 6)
-        {
-            const auto x_5_6 = (S) 0.00124359387839 + (S) 0.000217187820427 * x;
-            const auto x_3_4 = (S) 0.0554833098983 + (S) 0.00967911763840 * x;
-            const auto x_1_2 = (S) 0.693147003658 + (S) 0.240229787107 * x;
-            const auto x_3_4_5_6 = x_3_4 + x_5_6 * x_sq;
-            const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
-            return (S) 1 + x_1_2_3_4_5_6 * x;
+            if constexpr (order == 3)
+            {
+                const auto x_2_3 = (S) 0.227411277760 + (S) 0.0794415416798 * x;
+                const auto x_0_1 = (S) 1 + (S) 0.693147180560 * x;
+                return x_0_1 + x_2_3 * x_sq;
+            }
+            else if constexpr (order == 4)
+            {
+                const auto x_3_4 = (S) 0.0521277476109 + (S) 0.0136568970345 * x;
+                const auto x_1_2 = (S) 0.693147180560 + (S) 0.241068174795 * x;
+                const auto x_1_2_3_4 = x_1_2 + x_3_4 * x_sq;
+                return (S) 1 + x_1_2_3_4 * x;
+            }
+            else if constexpr (order == 5)
+            {
+                const auto x_4_5 = (S) 0.00899838527231 + (S) 0.00188723482038 * x;
+                const auto x_2_3 = (S) 0.240184132673 + (S) 0.0557830666741 * x;
+                const auto x_2_3_4_5 = x_2_3 + x_4_5 * x_sq;
+                const auto x_0_1 = (S) 1 + (S) 0.693147180560 * x;
+                return x_0_1 + x_2_3_4_5 * x_sq;
+            }
+            else if constexpr (order == 6)
+            {
+                const auto x_5_6 = (S) 0.00124453797252 + (S) 0.000217714753229 * x;
+                const auto x_3_4 = (S) 0.0554875633068 + (S) 0.00967475272129 * x;
+                const auto x_1_2 = (S) 0.693147180560 + (S) 0.240228250686 * x;
+                const auto x_3_4_5_6 = x_3_4 + x_5_6 * x_sq;
+                const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
+                return (S) 1 + x_1_2_3_4_5_6 * x;
+            }
+            else
+            {
+                return {};
+            }
         }
         else
         {
-            return {};
+            if constexpr (order == 3)
+            {
+                const auto x_2_3 = (S) 0.226307586882 + (S) 0.0782680256330 * x;
+                const auto x_0_1 = (S) 1 + (S) 0.695424387485 * x;
+                return x_0_1 + x_2_3 * x_sq;
+            }
+            else if constexpr (order == 4)
+            {
+                const auto x_3_4 = (S) 0.0520324008177 + (S) 0.0135557244044 * x;
+                const auto x_1_2 = (S) 0.693032120001 + (S) 0.241379754777 * x;
+                const auto x_1_2_3_4 = x_1_2 + x_3_4 * x_sq;
+                return (S) 1 + x_1_2_3_4 * x;
+            }
+            else if constexpr (order == 5)
+            {
+                const auto x_4_5 = (S) 0.00899009909264 + (S) 0.00187839071291 * x;
+                const auto x_2_3 = (S) 0.240156326598 + (S) 0.0558229130202 * x;
+                const auto x_2_3_4_5 = x_2_3 + x_4_5 * x_sq;
+                const auto x_0_1 = (S) 1 + (S) 0.693152270576 * x;
+                return x_0_1 + x_2_3_4_5 * x_sq;
+            }
+            else if constexpr (order == 6)
+            {
+                const auto x_5_6 = (S) 0.00124359387839 + (S) 0.000217187820427 * x;
+                const auto x_3_4 = (S) 0.0554833098983 + (S) 0.00967911763840 * x;
+                const auto x_1_2 = (S) 0.693147003658 + (S) 0.240229787107 * x;
+                const auto x_3_4_5_6 = x_3_4 + x_5_6 * x_sq;
+                const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
+                return (S) 1 + x_1_2_3_4_5_6 * x;
+            }
+            else
+            {
+                return {};
+            }
         }
     }
 
@@ -76,7 +116,7 @@ namespace pow_detail
 #endif
 
 /** approximation for pow(Base, x) (32-bit) */
-template <typename Base, int order>
+template <typename Base, int order, bool C1_continuous>
 float pow (float x)
 {
     x = std::max (-126.0f, Base::log2_base * x);
@@ -86,11 +126,11 @@ float pow (float x)
     const auto f = x - (float) l;
     const auto vi = (l + 127) << 23;
 
-    return reinterpret_cast<const float&> (vi) * pow_detail::pow2_approx<float, order> (f);
+    return reinterpret_cast<const float&> (vi) * pow_detail::pow2_approx<float, order, C1_continuous> (f);
 }
 
 /** approximation for pow(Base, x) (64-bit) */
-template <typename Base, int order>
+template <typename Base, int order, bool C1_continuous>
 double pow (double x)
 {
     x = std::max (-1022.0, Base::log2_base * x);
@@ -100,12 +140,12 @@ double pow (double x)
     const auto d = x - (double) l;
     const auto vi = (l + 1023) << 52;
 
-    return reinterpret_cast<const double&> (vi) * pow_detail::pow2_approx<double, order> (d);
+    return reinterpret_cast<const double&> (vi) * pow_detail::pow2_approx<double, order, C1_continuous> (d);
 }
 
 #if defined(XSIMD_HPP)
 /** approximation for pow(Base, x) (32-bit SIMD) */
-template <typename Base, int order>
+template <typename Base, int order, bool C1_continuous>
 xsimd::batch<float> pow (xsimd::batch<float> x)
 {
     x = xsimd::max (xsimd::broadcast (-126.0f), Base::log2_base * x);
@@ -115,11 +155,11 @@ xsimd::batch<float> pow (xsimd::batch<float> x)
     const auto f = x - xsimd::to_float (l);
     const auto vi = (l + 127) << 23;
 
-    return reinterpret_cast<const xsimd::batch<float>&> (vi) * pow_detail::pow2_approx<xsimd::batch<float>, order> (f);
+    return reinterpret_cast<const xsimd::batch<float>&> (vi) * pow_detail::pow2_approx<xsimd::batch<float>, order, C1_continuous> (f);
 }
 
 /** approximation for pow(Base, x) (64-bit SIMD) */
-template <typename Base, int order>
+template <typename Base, int order, bool C1_continuous>
 xsimd::batch<double> pow (xsimd::batch<double> x)
 {
     x = xsimd::max (-1022.0, Base::log2_base * x);
@@ -129,7 +169,7 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
     const auto d = x - xsimd::to_float (l);
     const auto vi = (l + 1023) << 52;
 
-    return reinterpret_cast<const xsimd::batch<double>&> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order> (d);
+    return reinterpret_cast<const xsimd::batch<double>&> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order, C1_continuous> (d);
 }
 #endif
 
@@ -137,21 +177,21 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
 #pragma GCC diagnostic pop // end ignore strict-aliasing warnings
 #endif
 
-template <int order, typename T>
+template <int order, bool C1_continuous = false, typename T>
 T exp (T x)
 {
-    return pow<pow_detail::BaseE<scalar_of_t<T>>, order> (x);
+    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
-template <int order, typename T>
+template <int order, bool C1_continuous = false, typename T>
 T exp2 (T x)
 {
-    return pow<pow_detail::Base2<scalar_of_t<T>>, order> (x);
+    return pow<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
-template <int order, typename T>
+template <int order, bool C1_continuous = false, typename T>
 T exp10 (T x)
 {
-    return pow<pow_detail::Base10<scalar_of_t<T>>, order> (x);
+    return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 }

@@ -49,6 +49,17 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
                                6.0e-7f,
                                10);
     }
+    SECTION ("6th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                               y_exact,
+                               [](auto x)
+                               {
+                                   return math_approx::exp<6, true> (x);
+                               },
+                               6.0e-7f,
+                               10);
+    }
     SECTION ("5th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -58,6 +69,17 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
                                    return math_approx::exp<5> (x);
                                },
                                7.5e-7f,
+                               15);
+    }
+    SECTION ("5th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                               y_exact,
+                               [](auto x)
+                               {
+                                   return math_approx::exp<5, true> (x);
+                               },
+                               9.0e-7f,
                                15);
     }
     SECTION ("4th-Order")
@@ -71,6 +93,17 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
                                4.0e-6f,
                                80);
     }
+    SECTION ("4th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                               y_exact,
+                               [](auto x)
+                               {
+                                   return math_approx::exp<4, true> (x);
+                               },
+                               1.5e-5f,
+                               180);
+    }
     SECTION ("3th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -80,6 +113,17 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
                                    return math_approx::exp<3> (x);
                                },
                                1.5e-4f,
+                               0);
+    }
+    SECTION ("3th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                               y_exact,
+                               [](auto x)
+                               {
+                                   return math_approx::exp<3, true> (x);
+                               },
+                               6.5e-4f,
                                0);
     }
 }
@@ -104,6 +148,17 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
                      3.0e-7f,
                      4);
     }
+    SECTION ("6th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp2<6, true> (x);
+                     },
+                     3.0e-7f,
+                     4);
+    }
     SECTION ("5th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -114,6 +169,17 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
                      },
                      4.0e-7f,
                      5);
+    }
+    SECTION ("5th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp2<5, true> (x);
+                     },
+                     5.0e-7f,
+                     8);
     }
     SECTION ("4th-Order")
     {
@@ -126,6 +192,17 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
                      4.0e-6f,
                      70);
     }
+    SECTION ("4th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp2<4, true> (x);
+                     },
+                     1.5e-5f,
+                     175);
+    }
     SECTION ("3th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -135,6 +212,17 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
                          return math_approx::exp2<3> (x);
                      },
                      1.5e-4f,
+                     0);
+    }
+    SECTION ("3th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp2<3, true> (x);
+                     },
+                     6.5e-4f,
                      0);
     }
 }
@@ -159,6 +247,17 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
                      2.0e-6f,
                      32);
     }
+    SECTION ("6th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp10<6, true> (x);
+                     },
+                     6.0e-6f,
+                     32);
+    }
     SECTION ("5th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -166,6 +265,17 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
                      [](auto x)
                      {
                          return math_approx::exp10<5> (x);
+                     },
+                     2.5e-6f,
+                     35);
+    }
+    SECTION ("5th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp10<5, true> (x);
                      },
                      2.5e-6f,
                      35);
@@ -181,6 +291,17 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
                      5.5e-6f,
                      90);
     }
+    SECTION ("4th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp10<4, true> (x);
+                     },
+                     1.5e-5f,
+                     200);
+    }
     SECTION ("3th-Order")
     {
         test_approx<TestType> (all_floats,
@@ -190,6 +311,17 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
                          return math_approx::exp10<3> (x);
                      },
                      1.5e-4f,
+                     0);
+    }
+    SECTION ("3th-Order (C1-cont)")
+    {
+        test_approx<TestType> (all_floats,
+                     y_exact,
+                     [](auto x)
+                     {
+                         return math_approx::exp10<3, true> (x);
+                     },
+                     6.5e-4f,
                      0);
     }
 }
