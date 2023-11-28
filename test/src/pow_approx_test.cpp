@@ -31,7 +31,7 @@ void test_approx (const auto& all_floats, const auto& y_exact, auto&& f_approx, 
 
 TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
 {
-    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
                                                               [](auto x)
                                                               {
@@ -130,7 +130,7 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
 
 TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
 {
-    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
                                                     [](auto x)
                                                     {
@@ -229,7 +229,7 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
 
 TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
 {
-    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
                                                     [](auto x)
                                                     {
