@@ -8,6 +8,7 @@ namespace plt = matplotlibcpp;
 
 #include "../../test/src/test_helpers.hpp"
 #include "../../test/src/reference/toms917.hpp"
+#include "../../test/src/reference/dangelo_omega.hpp"
 #include <math_approx/math_approx.hpp>
 
 template <typename F_Approx>
@@ -66,8 +67,12 @@ int main()
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
     const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC(toms917::wrightomega));
 
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<3, 3, 4>)), "W-O 3-3-4");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<3, 3, 5>)), "W-O 3-3-5");
+    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<0>)), "W-O 0-3");
+    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<0, 5>)), "W-O 0-5");
+    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<1>)), "W-O 1-3");
+    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<0>)), "W-O D'Angelo 0");
+    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<1>)), "W-O D'Angelo 1");
+    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<2>)), "W-O D'Angelo 2");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

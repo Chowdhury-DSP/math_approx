@@ -9,3 +9,4 @@ Currently supported:
 - log/log2/log10
 - tanh
 - sigmoid
+- Wright-Omega function
