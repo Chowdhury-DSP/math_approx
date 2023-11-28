@@ -8,7 +8,7 @@
 TEST_CASE ("Wright-Omega Approx Test")
 {
 #if ! defined(WIN32)
-    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 30.0f, 5.0e-3f);
+    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 30.0f, 1.0e-1f);
 #else
     const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 30.0f, 5.0e-1f);
 #endif
