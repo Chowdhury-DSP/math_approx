@@ -2,4 +2,10 @@
 
 A C++ library for math approximations.
 
-More info coming soon!
+Currently supported:
+
+- sin/cos
+- exp/exp2/exp10
+- log/log2/log10
+- tanh
+- sigmoid
