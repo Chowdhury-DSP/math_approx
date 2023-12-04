@@ -10,3 +10,4 @@ Currently supported:
 - tanh
 - sigmoid
 - Wright-Omega function
+- Dilogarithm function

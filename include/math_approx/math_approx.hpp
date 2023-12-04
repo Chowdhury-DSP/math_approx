@@ -12,3 +12,4 @@ namespace math_approx
 #include "src/pow_approx.hpp"
 #include "src/log_approx.hpp"
 #include "src/wright_omega_approx.hpp"
+#include "src/polylogarithm_approx.hpp"

@@ -8,7 +8,7 @@ namespace plt = matplotlibcpp;
 
 #include "../../test/src/test_helpers.hpp"
 #include "../../test/src/reference/toms917.hpp"
-#include "../../test/src/reference/dangelo_omega.hpp"
+#include "../../test/src/reference/polylogarithm.hpp"
 #include <math_approx/math_approx.hpp>
 
 template <typename F_Approx>
@@ -61,18 +61,12 @@ void plot_function (std::span<const float> all_floats,
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-10.0f, 30.0f);
-    static constexpr auto tol = 1.0e-1f;
+    const auto range = std::make_pair (-5.0f, 5.0f);
+    static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC(toms917::wrightomega));
-
-    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<0>)), "W-O 0-3");
-    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<0, 5>)), "W-O 0-5");
-    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega<1>)), "W-O 1-3");
-    // plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<0>)), "W-O D'Angelo 0");
-    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<1>)), "W-O D'Angelo 1");
-    plot_error (all_floats, y_exact, FLOAT_FUNC((math_approx::wright_omega_dangelo<2>)), "W-O D'Angelo 2");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC(polylogarithm::Li2));
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC((math_approx::li2<3,6>)), "Li2-3");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

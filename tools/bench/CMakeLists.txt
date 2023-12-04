@@ -22,3 +22,6 @@ target_link_libraries(log_approx_bench PRIVATE benchmark::benchmark math_approx)
 
 add_executable(wright_omega_approx_bench wright_omega_bench.cpp)
 target_link_libraries(wright_omega_approx_bench PRIVATE benchmark::benchmark math_approx)
+
+add_executable(polylog_approx_bench polylog_bench.cpp)
+target_link_libraries(polylog_approx_bench PRIVATE benchmark::benchmark math_approx)
