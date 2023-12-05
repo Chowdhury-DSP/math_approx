@@ -35,6 +35,14 @@ TRIG_BENCH (sin_approx9, math_approx::sin<9>)
 TRIG_BENCH (sin_approx7, math_approx::sin<7>)
 TRIG_BENCH (sin_approx5, math_approx::sin<5>)
 
+TRIG_BENCH (tan_std, std::tan)
+TRIG_BENCH (tan_approx13, math_approx::tan<13>)
+TRIG_BENCH (tan_approx11, math_approx::tan<11>)
+TRIG_BENCH (tan_approx9, math_approx::tan<9>)
+TRIG_BENCH (tan_approx7, math_approx::tan<7>)
+TRIG_BENCH (tan_approx5, math_approx::tan<5>)
+TRIG_BENCH (tan_approx3, math_approx::tan<3>)
+
 #define TRIG_SIMD_BENCH(name, func) \
 void name (benchmark::State& state) \
 { \
@@ -59,5 +67,13 @@ TRIG_SIMD_BENCH (cos_xsimd, xsimd::cos)
 TRIG_SIMD_BENCH (cos_simd_approx9, math_approx::cos<9>)
 TRIG_SIMD_BENCH (cos_simd_approx7, math_approx::cos<7>)
 TRIG_SIMD_BENCH (cos_simd_approx5, math_approx::cos<5>)
+
+TRIG_SIMD_BENCH (tan_xsimd, xsimd::tan)
+TRIG_SIMD_BENCH (tan_simd_approx13, math_approx::tan<13>)
+TRIG_SIMD_BENCH (tan_simd_approx11, math_approx::tan<11>)
+TRIG_SIMD_BENCH (tan_simd_approx9, math_approx::tan<9>)
+TRIG_SIMD_BENCH (tan_simd_approx7, math_approx::tan<7>)
+TRIG_SIMD_BENCH (tan_simd_approx5, math_approx::tan<5>)
+TRIG_SIMD_BENCH (tan_simd_approx3, math_approx::tan<3>)
 
 BENCHMARK_MAIN();

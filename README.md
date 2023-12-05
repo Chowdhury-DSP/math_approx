@@ -4,10 +4,10 @@ A C++ library for math approximations.
 
 Currently supported:
 
-- sin/cos
+- sin/cos/tan
 - exp/exp2/exp10
 - log/log2/log10
-- tanh
+- sinh/cosh/tanh
 - sigmoid
 - Wright-Omega function
 - Dilogarithm function

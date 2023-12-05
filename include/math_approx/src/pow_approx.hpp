@@ -10,7 +10,7 @@ namespace pow_detail
     template <typename T, int order, bool C1_continuous>
     constexpr T pow2_approx (T x)
     {
-        static_assert (order >= 3 && order <= 6);
+        static_assert (order >= 3 && order <= 7);
         using S = scalar_of_t<T>;
 
         const auto x_sq = x * x;
@@ -45,6 +45,17 @@ namespace pow_detail
                 const auto x_3_4_5_6 = x_3_4 + x_5_6 * x_sq;
                 const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
                 return (S) 1 + x_1_2_3_4_5_6 * x;
+            }
+            else if constexpr (order == 7)
+            {
+                // doesn't seem to help at single-precision
+                const auto x_6_7 = (S) 0.000133154170702612 + (S) 0.0000245778949916153 * x;
+                const auto x_4_5 = (S) 0.00960612128901630 + (S) 0.00135551454943593 * x;
+                const auto x_2_3 = (S) 0.240226202240181 + (S) 0.0555072492957270 * x;
+                const auto x_0_1 = (S) 1 + (S) 0.693147180559945 * x;
+                const auto x_4_5_6_7 = x_4_5 + x_6_7 * x_sq;
+                const auto x_0_1_2_3 = x_0_1 + x_2_3 * x_sq;
+                return x_0_1_2_3 + x_4_5_6_7 * x_sq * x_sq;
             }
             else
             {
@@ -82,6 +93,17 @@ namespace pow_detail
                 const auto x_3_4_5_6 = x_3_4 + x_5_6 * x_sq;
                 const auto x_1_2_3_4_5_6 = x_1_2 + x_3_4_5_6 * x_sq;
                 return (S) 1 + x_1_2_3_4_5_6 * x;
+            }
+            else if constexpr (order == 7)
+            {
+                // doesn't seem to help at single-precision
+                const auto x_6_7 = (S) 0.000136898688977877 + (S) 0.0000234440812713967 * x;
+                const auto x_4_5 = (S) 0.00960825566419915 + (S) 0.00135107295099880 * x;
+                const auto x_2_3 = (S) 0.240226092549669 + (S) 0.0555070350342468 * x;
+                const auto x_0_1 = (S) 1 + (S) 0.693147201030637 * x;
+                const auto x_4_5_6_7 = x_4_5 + x_6_7 * x_sq;
+                const auto x_0_1_2_3 = x_0_1 + x_2_3 * x_sq;
+                return x_0_1_2_3 + x_4_5_6_7 * x_sq * x_sq;
             }
             else
             {
