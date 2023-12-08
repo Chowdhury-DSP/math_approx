@@ -11,6 +11,7 @@ namespace math_approx
 #include "src/log_approx.hpp"
 #include "src/tanh_approx.hpp"
 #include "src/sinh_cosh_approx.hpp"
+#include "src/asinh_approx.hpp"
 #include "src/sigmoid_approx.hpp"
 #include "src/wright_omega_approx.hpp"
 #include "src/polylogarithm_approx.hpp"

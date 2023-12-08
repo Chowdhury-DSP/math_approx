@@ -6,9 +6,9 @@
 #include <plt/matplotlibcpp.h>
 namespace plt = matplotlibcpp;
 
-#include "../../test/src/test_helpers.hpp"
-#include "../../test/src/reference/toms917.hpp"
 #include "../../test/src/reference/polylogarithm.hpp"
+#include "../../test/src/reference/toms917.hpp"
+#include "../../test/src/test_helpers.hpp"
 #include <math_approx/math_approx.hpp>
 
 template <typename F_Approx>
@@ -61,13 +61,14 @@ void plot_function (std::span<const float> all_floats,
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-3.0f, 3.0f);
+    const auto range = std::make_pair (-1.0f, 1.0f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC(std::cosh));
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC((math_approx::cosh<5>)), "cosh-5");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC((math_approx::cosh<6>)), "cosh-6");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::asinh));
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<5>)), "asinh-5");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<6>) ), "asinh-6");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<7>) ), "asinh-7");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

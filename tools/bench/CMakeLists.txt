@@ -28,3 +28,6 @@ target_link_libraries(polylog_approx_bench PRIVATE benchmark::benchmark math_app
 
 add_executable(sinh_cosh_approx_bench sinh_cosh_bench.cpp)
 target_link_libraries(sinh_cosh_approx_bench PRIVATE benchmark::benchmark math_approx)
+
+add_executable(asinh_approx_bench asinh_bench.cpp)
+target_link_libraries(asinh_approx_bench PRIVATE benchmark::benchmark math_approx)
