@@ -22,7 +22,7 @@ TEMPLATE_TEST_CASE ("Asinh Approx Test", "", float, double)
 #if ! defined(WIN32)
     const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 1.0e-2f);
 #else
-    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 1.0e-1f);
 #endif
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats, [] (auto x)
                                                     { return std::asinh (x); });
