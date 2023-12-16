@@ -139,7 +139,7 @@ namespace pow_detail
 
 /** approximation for pow(Base, x) (32-bit) */
 template <typename Base, int order, bool C1_continuous>
-float pow (float x)
+constexpr float pow (float x)
 {
     x = std::max (-126.0f, Base::log2_base * x);
 
@@ -148,12 +148,12 @@ float pow (float x)
     const auto f = x - (float) l;
     const auto vi = (l + 127) << 23;
 
-    return reinterpret_cast<const float&> (vi) * pow_detail::pow2_approx<float, order, C1_continuous> (f);
+    return std::bit_cast<float> (vi) * pow_detail::pow2_approx<float, order, C1_continuous> (f);
 }
 
 /** approximation for pow(Base, x) (64-bit) */
 template <typename Base, int order, bool C1_continuous>
-double pow (double x)
+constexpr double pow (double x)
 {
     x = std::max (-1022.0, Base::log2_base * x);
 
@@ -162,7 +162,7 @@ double pow (double x)
     const auto d = x - (double) l;
     const auto vi = (l + 1023) << 52;
 
-    return reinterpret_cast<const double&> (vi) * pow_detail::pow2_approx<double, order, C1_continuous> (d);
+    return std::bit_cast<double> (vi) * pow_detail::pow2_approx<double, order, C1_continuous> (d);
 }
 
 #if defined(XSIMD_HPP)
@@ -177,7 +177,7 @@ xsimd::batch<float> pow (xsimd::batch<float> x)
     const auto f = x - xsimd::to_float (l);
     const auto vi = (l + 127) << 23;
 
-    return reinterpret_cast<const xsimd::batch<float>&> (vi) * pow_detail::pow2_approx<xsimd::batch<float>, order, C1_continuous> (f);
+    return xsimd::bit_cast<xsimd::batch<float>> (vi) * pow_detail::pow2_approx<xsimd::batch<float>, order, C1_continuous> (f);
 }
 
 /** approximation for pow(Base, x) (64-bit SIMD) */
@@ -191,7 +191,7 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
     const auto d = x - xsimd::to_float (l);
     const auto vi = (l + 1023) << 52;
 
-    return reinterpret_cast<const xsimd::batch<double>&> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order, C1_continuous> (d);
+    return xsimd::bit_cast<xsimd::batch<double>> (vi) * pow_detail::pow2_approx<xsimd::batch<double>, order, C1_continuous> (d);
 }
 #endif
 
@@ -200,19 +200,19 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
 #endif
 
 template <int order, bool C1_continuous = false, typename T>
-T exp (T x)
+constexpr T exp (T x)
 {
     return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
 template <int order, bool C1_continuous = false, typename T>
-T exp2 (T x)
+constexpr T exp2 (T x)
 {
     return pow<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
 template <int order, bool C1_continuous = false, typename T>
-T exp10 (T x)
+constexpr T exp10 (T x)
 {
     return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }

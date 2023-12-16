@@ -9,7 +9,7 @@ namespace tanh_detail
     // These polynomial fits were generated from: https://www.wolframcloud.com/obj/chowdsp/Published/tanh_approx.nb
 
     template <typename T>
-    T tanh_poly_11 (T x)
+    constexpr T tanh_poly_11 (T x)
     {
         using S = scalar_of_t<T>;
         const auto x_sq = x * x;
@@ -22,7 +22,7 @@ namespace tanh_detail
     }
 
     template <typename T>
-    T tanh_poly_9 (T x)
+    constexpr T tanh_poly_9 (T x)
     {
         using S = scalar_of_t<T>;
         const auto x_sq = x * x;
@@ -34,7 +34,7 @@ namespace tanh_detail
     }
 
     template <typename T>
-    T tanh_poly_7 (T x)
+    constexpr T tanh_poly_7 (T x)
     {
         using S = scalar_of_t<T>;
         const auto x_sq = x * x;
@@ -45,7 +45,7 @@ namespace tanh_detail
     }
 
     template <typename T>
-    T tanh_poly_5 (T x)
+    constexpr T tanh_poly_5 (T x)
     {
         using S = scalar_of_t<T>;
         const auto x_sq = x * x;
@@ -55,7 +55,7 @@ namespace tanh_detail
     }
 
     template <typename T>
-    T tanh_poly_3 (T x)
+    constexpr T tanh_poly_3 (T x)
     {
         using S = scalar_of_t<T>;
         const auto x_sq = x * x;

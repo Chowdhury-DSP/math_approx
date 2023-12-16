@@ -5,12 +5,12 @@
 namespace math_approx
 {
 template <int num_nr_iters, int poly_order = 3, int log_order = (num_nr_iters <= 1 ? 3 : 4), int exp_order = log_order, typename T>
-T wright_omega (T x)
+constexpr T wright_omega (T x)
 {
     static_assert (poly_order == 3 || poly_order == 5);
 
     using S = scalar_of_t<T>;
-    static constexpr auto E = (S) 2.7182818284590452354;
+    constexpr auto E = (S) 2.7182818284590452354;
 
     const auto x1 = [] (T _x)
     {
@@ -56,7 +56,7 @@ T wright_omega (T x)
  * For more accuracy, use the other implementation with at least 1 NR iteration.
  */
 template <int num_nr_iters, int log_order = 3, int exp_order = log_order, typename T>
-T wright_omega_dangelo (T x)
+constexpr T wright_omega_dangelo (T x)
 {
     using S = scalar_of_t<T>;
 

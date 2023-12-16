@@ -24,6 +24,8 @@ using scalar_of_t = typename scalar_of<T>::type;
 template <typename T>
 T rsqrt (T x)
 {
+    // @TODO: figure out a way that we can make this method constexpr
+
     // sqrtss followed by divss... this seems to measure a bit faster than the rsqrtss plus NR iteration below
     return (T) 1 / std::sqrt (x);
 

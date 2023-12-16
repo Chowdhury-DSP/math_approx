@@ -52,7 +52,7 @@ struct AsinhLog2Provider
  * accuracy achieved by the STL implementation).
  */
 template <int order, typename T>
-T asinh (T x)
+constexpr T asinh (T x)
 {
     using S = scalar_of_t<T>;
     using std::abs;

@@ -7,7 +7,7 @@ namespace math_approx
 namespace trig_detail
 {
     template <typename T>
-    T truncate (T x)
+    constexpr T truncate (T x)
     {
         return static_cast<T> (static_cast<int> (x));
     }
@@ -22,12 +22,12 @@ namespace trig_detail
 
     /** Fast method to wrap a value into the range [-pi, pi] */
     template <typename T>
-    T fast_mod_mpi_pi (T x)
+    constexpr T fast_mod_mpi_pi (T x)
     {
         using S = scalar_of_t<T>;
-        static constexpr auto pi = static_cast<S> (M_PI);
-        static constexpr auto two_pi = static_cast<S> (2.0 * M_PI);
-        static constexpr auto recip_two_pi = static_cast<S> (1) / two_pi;
+        constexpr auto pi = static_cast<S> (M_PI);
+        constexpr auto two_pi = static_cast<S> (2.0 * M_PI);
+        constexpr auto recip_two_pi = static_cast<S> (1) / two_pi;
 
         x += pi;
         const auto mod = x - two_pi * truncate (x * recip_two_pi);
@@ -36,12 +36,12 @@ namespace trig_detail
 
     /** Fast method to wrap a value into the range [-pi/2, pi/2] */
     template <typename T>
-    T fast_mod_mhalfpi_halfpi (T x)
+    constexpr T fast_mod_mhalfpi_halfpi (T x)
     {
         using S = scalar_of_t<T>;
-        static constexpr auto half_pi = static_cast<S> (M_PI) * (S) 0.5;
-        static constexpr auto pi = static_cast<S> (M_PI);
-        static constexpr auto recip_pi = (S) 1 / pi;
+        constexpr auto half_pi = static_cast<S> (M_PI) * (S) 0.5;
+        constexpr auto pi = static_cast<S> (M_PI);
+        constexpr auto recip_pi = (S) 1 / pi;
 
         x += half_pi;
         const auto mod = x - pi * truncate (x * recip_pi);
@@ -49,7 +49,7 @@ namespace trig_detail
     }
 
     template <typename T>
-    T sin_poly_9 (T x, T x_sq)
+    constexpr T sin_poly_9 (T x, T x_sq)
     {
         using S = scalar_of_t<T>;
         const auto x_7_9 = (S) -2.49397084313e-6 + (S) 2.00382818811e-8 * x_sq;
@@ -60,7 +60,7 @@ namespace trig_detail
     }
 
     template <typename T>
-    T sin_poly_7 (T x, T x_sq)
+    constexpr T sin_poly_7 (T x, T x_sq)
     {
         using S = scalar_of_t<T>;
         const auto x_5_7 = (S) 0.000170965340046 + (S) -2.09843101304e-6 * x_sq;
@@ -70,7 +70,7 @@ namespace trig_detail
     }
 
     template <typename T>
-    T sin_poly_5 (T x, T x_sq)
+    constexpr T sin_poly_5 (T x, T x_sq)
     {
         using S = scalar_of_t<T>;
         const auto x_3_5 = (S) -0.00650096169550 + (S) 0.000139899314103 * x_sq;
@@ -80,13 +80,13 @@ namespace trig_detail
 } // namespace sin_detail
 
 template <int order, typename T>
-T sin_mpi_pi (T x)
+constexpr T sin_mpi_pi (T x)
 {
     static_assert (order % 2 == 1 && order <= 9 && order >= 5, "Order must be an odd number within [5, 9]");
 
     using S = scalar_of_t<T>;
-    static constexpr auto pi = static_cast<S> (M_PI);
-    static constexpr auto pi_sq = pi * pi;
+    constexpr auto pi = static_cast<S> (M_PI);
+    constexpr auto pi_sq = pi * pi;
     const auto x_sq = x * x;
 
     T x_poly {};
@@ -101,20 +101,20 @@ T sin_mpi_pi (T x)
 }
 
 template <int order, typename T>
-T sin (T x)
+constexpr T sin (T x)
 {
     return sin_mpi_pi<order, T> (trig_detail::fast_mod_mpi_pi (x));
 }
 
 template <int order, typename T>
-T cos_mpi_pi (T x)
+constexpr T cos_mpi_pi (T x)
 {
     static_assert (order % 2 == 1 && order <= 9 && order >= 5, "Order must be an odd number within [5, 9]");
 
     using S = scalar_of_t<T>;
-    static constexpr auto pi = static_cast<S> (M_PI);
-    static constexpr auto pi_sq = pi * pi;
-    static constexpr auto pi_o_2 = pi * (S) 0.5;
+    constexpr auto pi = static_cast<S> (M_PI);
+    constexpr auto pi_sq = pi * pi;
+    constexpr auto pi_o_2 = pi * (S) 0.5;
 
     using std::abs;
 #if defined(XSIMD_HPP)
@@ -137,14 +137,14 @@ T cos_mpi_pi (T x)
 }
 
 template <int order, typename T>
-T cos (T x)
+constexpr T cos (T x)
 {
     return cos_mpi_pi<order, T> (trig_detail::fast_mod_mpi_pi (x));
 }
 
 /** Approximation of tan(x) on the range [-pi/4, pi/4] */
 template <int order, typename T>
-T tan_mquarterpi_quarterpi (T x)
+constexpr T tan_mquarterpi_quarterpi (T x)
 {
     static_assert (order % 2 == 1 && order >= 3 && order <= 15, "Order must be an odd number within [3, 15]");
 
@@ -222,7 +222,7 @@ T tan_mquarterpi_quarterpi (T x)
  * Accuracy may suffer as x approaches ±pi/2.
  */
 template <int order, typename T>
-T tan_mhalfpi_halfpi (T x)
+constexpr T tan_mhalfpi_halfpi (T x)
 {
     using S = scalar_of_t<T>;
     const auto h_x = tan_mquarterpi_quarterpi<order> ((S) 0.5 * x);
@@ -235,7 +235,7 @@ T tan_mhalfpi_halfpi (T x)
  * Accuracy may suffer as x approaches values for which tan(x) approaches ±Inf.
  */
 template <int order, typename T>
-T tan (T x)
+constexpr T tan (T x)
 {
     return tan_mhalfpi_halfpi<order> (trig_detail::fast_mod_mhalfpi_halfpi (x));
 }

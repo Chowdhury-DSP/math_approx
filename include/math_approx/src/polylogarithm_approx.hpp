@@ -14,7 +14,7 @@ namespace math_approx
  * improve the accuracy very much.
  */
 template <int order, typename T>
-T li2_0_half (T x)
+constexpr T li2_0_half (T x)
 {
     static_assert (order >= 1 && order <= 6);
     using S = scalar_of_t<T>;
@@ -104,13 +104,13 @@ T li2_0_half (T x)
  * improve the accuracy very much.
  */
 template <int order, int log_order = std::min (order + 2, 6), bool log_C1 = (log_order >= 5), typename T>
-T li2 (T x)
+constexpr T li2 (T x)
 {
     const auto x_r = (T) 1 / x;
     const auto x_r1 = (T) 1 / (x - (T) 1);
 
-    static constexpr auto pisq_o_6 = (T) M_PI * (T) M_PI / (T) 6;
-    static constexpr auto pisq_o_3 = (T) M_PI * (T) M_PI / (T) 3;
+    constexpr auto pisq_o_6 = (T) M_PI * (T) M_PI / (T) 6;
+    constexpr auto pisq_o_3 = (T) M_PI * (T) M_PI / (T) 3;
 
     T y, r;
     bool sign = true;

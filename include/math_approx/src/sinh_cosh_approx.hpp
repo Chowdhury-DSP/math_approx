@@ -11,7 +11,7 @@ namespace math_approx
 
 /** Approximation of sinh(x), using exp(x) internally */
 template <int order, typename T>
-T sinh (T x)
+constexpr T sinh (T x)
 {
     using S = scalar_of_t<T>;
     auto B = exp<order> (x);
@@ -22,7 +22,7 @@ T sinh (T x)
 
 /** Approximation of cosh(x), using exp(x) internally */
 template <int order, typename T>
-T cosh (T x)
+constexpr T cosh (T x)
 {
     using S = scalar_of_t<T>;
     auto B = exp<order> (x);
@@ -38,7 +38,7 @@ T cosh (T x)
  * For more information see the comments above.
  */
 template <int order, typename T>
-auto sinh_cosh (T x)
+constexpr auto sinh_cosh (T x)
 {
     using S = scalar_of_t<T>;
     auto B = exp<order> (x);

@@ -103,29 +103,29 @@ namespace log_detail
 
 /** approximation for log(Base, x) (32-bit) */
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
-float log (float x)
+constexpr float log (float x)
 {
-    const auto vi = reinterpret_cast<int32_t&> (x);
+    const auto vi = std::bit_cast<int32_t> (x);
     const auto ex = vi & 0x7f800000;
     const auto e = (ex >> 23) - 127;
     const auto vfi = (vi - ex) | 0x3f800000;
-    const auto vf = reinterpret_cast<const float&> (vfi);
+    const auto vf = std::bit_cast<float> (vfi);
 
-    static constexpr auto log2_base_r = 1.0f / Base::log2_base;
+    constexpr auto log2_base_r = 1.0f / Base::log2_base;
     return log2_base_r * ((float) e + Log2ProviderType::template log2_approx<float, order, C1_continuous> (vf));
 }
 
 /** approximation for log(x) (64-bit) */
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
-double log (double x)
+constexpr double log (double x)
 {
-    const auto vi = reinterpret_cast<int64_t&> (x);
+    const auto vi = std::bit_cast<int64_t> (x);
     const auto ex = vi & 0x7ff0000000000000;
     const auto e = (ex >> 52) - 1023;
     const auto vfi = (vi - ex) | 0x3ff0000000000000;
-    const auto vf = reinterpret_cast<const double&> (vfi);
+    const auto vf = std::bit_cast<double> (vfi);
 
-    static constexpr auto log2_base_r = 1.0 / Base::log2_base;
+    constexpr auto log2_base_r = 1.0 / Base::log2_base;
     return log2_base_r * ((double) e + Log2ProviderType::template log2_approx<double, order, C1_continuous> (vf));
 }
 
@@ -134,11 +134,11 @@ double log (double x)
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
 xsimd::batch<float> log (xsimd::batch<float> x)
 {
-    const auto vi = reinterpret_cast<xsimd::batch<int32_t>&> (x); // NOSONAR
+    const auto vi = xsimd::bit_cast<xsimd::batch<int32_t>> (x);
     const auto ex = vi & 0x7f800000;
     const auto e = (ex >> 23) - 127;
     const auto vfi = (vi - ex) | 0x3f800000;
-    const auto vf = reinterpret_cast<const xsimd::batch<float>&> (vfi); // NOSONAR
+    const auto vf = xsimd::bit_cast<xsimd::batch<float>> (vfi);
 
     static constexpr auto log2_base_r = 1.0f / Base::log2_base;
     return log2_base_r * (xsimd::to_float (e) + Log2ProviderType::template log2_approx<xsimd::batch<float>, order, C1_continuous> (vf));
@@ -148,11 +148,11 @@ xsimd::batch<float> log (xsimd::batch<float> x)
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
 xsimd::batch<double> log (xsimd::batch<double> x)
 {
-    const auto vi = reinterpret_cast<xsimd::batch<int64_t>&> (x); // NOSONAR
+    const auto vi = xsimd::bit_cast<xsimd::batch<int64_t>> (x);
     const auto ex = vi & 0x7ff0000000000000;
     const auto e = (ex >> 52) - 1023;
     const auto vfi = (vi - ex) | 0x3ff0000000000000;
-    const auto vf = reinterpret_cast<const xsimd::batch<double>&> (vfi); // NOSONAR
+    const auto vf = xsimd::bit_cast<xsimd::batch<double>> (vfi);
 
     static constexpr auto log2_base_r = 1.0 / Base::log2_base;
     return log2_base_r * (xsimd::to_float (e) + Log2ProviderType::template log2_approx<xsimd::batch<double>, order, C1_continuous> (vf));
@@ -164,19 +164,19 @@ xsimd::batch<double> log (xsimd::batch<double> x)
 #endif
 
 template <int order, bool C1_continuous = false, typename T>
-T log (T x)
+constexpr T log (T x)
 {
     return log<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
 template <int order, bool C1_continuous = false, typename T>
-T log2 (T x)
+constexpr T log2 (T x)
 {
     return log<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
 template <int order, bool C1_continuous = false, typename T>
-T log10 (T x)
+constexpr T log10 (T x)
 {
     return log<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
