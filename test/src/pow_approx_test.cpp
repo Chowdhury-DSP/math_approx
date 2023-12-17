@@ -1,5 +1,5 @@
-#include "test_helpers.hpp"
 #include "catch2/catch_template_test_macros.hpp"
+#include "test_helpers.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
@@ -17,7 +17,8 @@ void test_approx (const auto& all_floats, const auto& y_exact, auto&& f_approx, 
     {
         if constexpr (std::is_same_v<T, float>)
             return test_helpers::compute_ulp_error (y_exact, y_approx);
-        return std::vector<uint32_t> {};
+        else
+            return std::vector<uint32_t> {};
     }();
 
     const auto max_rel_error = test_helpers::abs_max<T> (rel_error);
@@ -33,96 +34,64 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
 {
     const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
-                                                              [](auto x)
+                                                              [] (auto x)
                                                               {
                                                                   return std::exp (x);
                                                               });
 
     SECTION ("6th-Order")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<6> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<6> (x); },
                                6.0e-7f,
                                10);
     }
     SECTION ("6th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<6, true> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<6, true> (x); },
                                6.0e-7f,
                                10);
     }
     SECTION ("5th-Order")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<5> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<5> (x); },
                                7.5e-7f,
                                15);
     }
     SECTION ("5th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<5, true> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<5, true> (x); },
                                9.0e-7f,
                                15);
     }
     SECTION ("4th-Order")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<4> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<4> (x); },
                                4.0e-6f,
                                80);
     }
     SECTION ("4th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<4, true> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<4, true> (x); },
                                1.5e-5f,
                                180);
     }
     SECTION ("3th-Order")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<3> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<3> (x); },
                                1.5e-4f,
                                0);
     }
     SECTION ("3th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                               y_exact,
-                               [](auto x)
-                               {
-                                   return math_approx::exp<3, true> (x);
-                               },
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<3, true> (x); },
                                6.5e-4f,
                                0);
     }
@@ -132,98 +101,66 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
 {
     const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
-                                                    [](auto x)
-                                                    {
-                                                        return std::exp2 (x);
-                                                    });
+                                                              [] (auto x)
+                                                              {
+                                                                  return std::exp2 (x);
+                                                              });
 
     SECTION ("6th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<6> (x);
-                     },
-                     3.0e-7f,
-                     4);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<6> (x); },
+                               3.0e-7f,
+                               4);
     }
     SECTION ("6th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<6, true> (x);
-                     },
-                     3.0e-7f,
-                     4);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<6, true> (x); },
+                               3.0e-7f,
+                               4);
     }
     SECTION ("5th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<5> (x);
-                     },
-                     4.0e-7f,
-                     5);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<5> (x); },
+                               4.0e-7f,
+                               5);
     }
     SECTION ("5th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<5, true> (x);
-                     },
-                     5.0e-7f,
-                     8);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<5, true> (x); },
+                               5.0e-7f,
+                               8);
     }
     SECTION ("4th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<4> (x);
-                     },
-                     4.0e-6f,
-                     70);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<4> (x); },
+                               4.0e-6f,
+                               70);
     }
     SECTION ("4th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<4, true> (x);
-                     },
-                     1.5e-5f,
-                     175);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<4, true> (x); },
+                               1.5e-5f,
+                               175);
     }
     SECTION ("3th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<3> (x);
-                     },
-                     1.5e-4f,
-                     0);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<3> (x); },
+                               1.5e-4f,
+                               0);
     }
     SECTION ("3th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp2<3, true> (x);
-                     },
-                     6.5e-4f,
-                     0);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<3, true> (x); },
+                               6.5e-4f,
+                               0);
     }
 }
 
@@ -231,97 +168,65 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
 {
     const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-10.0f, 10.0f, 2.5e-1f);
     const auto y_exact = test_helpers::compute_all<TestType> (all_floats,
-                                                    [](auto x)
-                                                    {
-                                                        return std::pow (10.0f, x);
-                                                    });
+                                                              [] (auto x)
+                                                              {
+                                                                  return std::pow (10.0f, x);
+                                                              });
 
     SECTION ("6th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<6> (x);
-                     },
-                     2.0e-6f,
-                     32);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<6> (x); },
+                               2.0e-6f,
+                               32);
     }
     SECTION ("6th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<6, true> (x);
-                     },
-                     6.0e-6f,
-                     32);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<6, true> (x); },
+                               6.0e-6f,
+                               32);
     }
     SECTION ("5th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<5> (x);
-                     },
-                     2.5e-6f,
-                     35);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<5> (x); },
+                               2.5e-6f,
+                               35);
     }
     SECTION ("5th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<5, true> (x);
-                     },
-                     2.5e-6f,
-                     35);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<5, true> (x); },
+                               2.5e-6f,
+                               35);
     }
     SECTION ("4th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<4> (x);
-                     },
-                     5.5e-6f,
-                     90);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<4> (x); },
+                               5.5e-6f,
+                               90);
     }
     SECTION ("4th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<4, true> (x);
-                     },
-                     1.5e-5f,
-                     200);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<4, true> (x); },
+                               1.5e-5f,
+                               200);
     }
     SECTION ("3th-Order")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<3> (x);
-                     },
-                     1.5e-4f,
-                     0);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<3> (x); },
+                               1.5e-4f,
+                               0);
     }
     SECTION ("3th-Order (C1-cont)")
     {
-        test_approx<TestType> (all_floats,
-                     y_exact,
-                     [](auto x)
-                     {
-                         return math_approx::exp10<3, true> (x);
-                     },
-                     6.5e-4f,
-                     0);
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<3, true> (x); },
+                               6.5e-4f,
+                               0);
     }
 }

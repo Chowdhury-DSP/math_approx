@@ -11,6 +11,8 @@
 #include <cmath>
 #endif
 
+#include <bit>
+
 namespace math_approx
 {
 template <typename T>

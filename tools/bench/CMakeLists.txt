@@ -1,3 +1,8 @@
+if($ENV{CI})
+    message(STATUS "Configuring in CI, skipping benchmarks...")
+    return()
+endif()
+
 CPMAddPackage(
     NAME benchmark
     GITHUB_REPOSITORY google/benchmark
