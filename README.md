@@ -5,8 +5,8 @@
 Currently supported:
 
 - sin/cos/tan
-- exp/exp2/exp10
-- log/log2/log10
+- exp/exp2/exp10/expm1
+- log/log2/log10/log1p
 - sinh/cosh/tanh
 - arcsinh
 - sigmoid

@@ -180,4 +180,10 @@ constexpr T log10 (T x)
 {
     return log<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
+
+template <int order, bool C1_continuous = false, typename T>
+constexpr T log1p (T x)
+{
+    return log<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> ((T) 1 + x);
+}
 }

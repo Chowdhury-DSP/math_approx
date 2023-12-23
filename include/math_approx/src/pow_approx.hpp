@@ -216,4 +216,10 @@ constexpr T exp10 (T x)
 {
     return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
+
+template <int order, bool C1_continuous = false, typename T>
+constexpr T expm1 (T x)
+{
+    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x) - (T) 1;
+}
 }

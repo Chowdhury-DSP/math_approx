@@ -62,13 +62,13 @@ int main()
 {
     plt::figure();
     const auto range = std::make_pair (-1.0f, 1.0f);
-    static constexpr auto tol = 1.0e-2f;
+    static constexpr auto tol = 1.0e-3f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::asinh));
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::expm1));
     // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<5>)), "asinh-5");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<6>) ), "asinh-6");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asinh<7>) ), "asinh-7");
+    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::expm1<5>) ), "expm1-5");
+    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::expm1<6>) ), "expm1-6");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);
