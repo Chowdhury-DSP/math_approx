@@ -7,6 +7,7 @@ namespace math_approx
 #include "src/basic_math.hpp"
 
 #include "src/trig_approx.hpp"
+#include "src/inverse_trig_approx.hpp"
 #include "src/pow_approx.hpp"
 #include "src/log_approx.hpp"
 #include "src/tanh_approx.hpp"
