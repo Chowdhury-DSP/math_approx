@@ -38,6 +38,11 @@ TRIG_BENCH (acos_approx3, math_approx::acos<3>)
 TRIG_BENCH (acos_approx2, math_approx::acos<2>)
 TRIG_BENCH (acos_approx1, math_approx::acos<1>)
 
+TRIG_BENCH (atan_std, std::atan)
+TRIG_BENCH (atan_approx7, math_approx::atan<7>)
+TRIG_BENCH (atan_approx5, math_approx::atan<5>)
+TRIG_BENCH (atan_approx4, math_approx::atan<4>)
+
 #define TRIG_SIMD_BENCH(name, func) \
 void name (benchmark::State& state) \
 { \
@@ -65,5 +70,10 @@ TRIG_SIMD_BENCH (acos_simd_approx4, math_approx::acos<4>)
 TRIG_SIMD_BENCH (acos_simd_approx3, math_approx::acos<3>)
 TRIG_SIMD_BENCH (acos_simd_approx2, math_approx::acos<2>)
 TRIG_SIMD_BENCH (acos_simd_approx1, math_approx::acos<1>)
+
+TRIG_SIMD_BENCH (atan_xsimd, xsimd::atan)
+TRIG_SIMD_BENCH (atan_simd_approx7, math_approx::atan<7>)
+TRIG_SIMD_BENCH (atan_simd_approx5, math_approx::atan<5>)
+TRIG_SIMD_BENCH (atan_simd_approx4, math_approx::atan<4>)
 
 BENCHMARK_MAIN();

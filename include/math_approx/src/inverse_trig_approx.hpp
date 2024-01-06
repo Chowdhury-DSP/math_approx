@@ -65,7 +65,49 @@ namespace inv_trig_detail
             return {};
         }
     }
-} // namespace asin_detail
+
+    template <int order, typename T>
+    constexpr T atan_kernel (T x)
+    {
+        using S = scalar_of_t<T>;
+        static_assert (order >= 4 && order <= 7);
+
+        if constexpr (order == 4)
+        {
+            const auto x_sq = x * x;
+
+            const auto num = x + x_sq * (S) 0.498001992540;
+            const auto den = (S) 1 + x * (S) 0.481844539675 + x_sq * (S) 0.425470835319;
+
+            return num / den;
+        }
+        else if constexpr (order == 5 || order == 6)
+        {
+            const auto x_sq = x * x;
+
+            const auto num = (S) 0.177801521472 + x * (S) 0.116983970701;
+            const auto den = (S) 1 + x * (S) 0.174763903018 + x_sq * (S) 0.473808187566;
+
+            return (x + x_sq * num) / den;
+        }
+        else if constexpr (order == 7)
+        {
+            const auto x_sq = x * x;
+
+            const auto num = (S) 0.274959104817 + (S) 0.351814748865 * x + (S) -0.0395798531406 * x_sq;
+            const auto den = (S) 1 + x * ((S) 0.275079063405 + x * ((S) 0.683311392128 + x * (S) 0.0624877111229));
+
+            return (x + x_sq * num) / den;
+
+            // an -> 0.274959104817, ad -> 0.275079063405, bn -> 0.351814748865, bd \
+            // -> 0.683311392128, cn -> -0.0395798531406, cd -> 0.0624877111229
+        }
+        else
+        {
+            return {};
+        }
+    }
+} // namespace inv_trig_detail
 
 template <int order, typename T>
 T asin (T x)
@@ -111,5 +153,25 @@ T acos (T x)
     auto z2 = z1 * (z0 * x2) + x2;
     auto res = select (reflect, (S) M_PI_2 - (z2 + z2), z2);
     return (S) M_PI_2 - select (x > (S) 0, res, -res);
+}
+
+template <int order, typename T>
+T atan (T x)
+{
+    using S = scalar_of_t<T>;
+
+    using std::abs, std::sqrt;
+#if defined(XSIMD_HPP)
+    using xsimd::abs, xsimd::sqrt;
+#endif
+
+    const auto abs_x = abs (x);
+    const auto reflect = abs_x > (S) 1;
+
+    const auto z = select (reflect, (S) 1 / abs_x, abs_x);
+    const auto atan_01 = inv_trig_detail::atan_kernel<order> (z);
+
+    const auto res = select (reflect, (S) M_PI_2 - atan_01, atan_01);
+    return select (x > (S) 0, res, -res);
 }
 } // namespace math_approx

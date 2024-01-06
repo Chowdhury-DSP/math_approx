@@ -5,7 +5,7 @@
 Currently supported:
 
 - sin/cos/tan
-- arcsin/arccos
+- arcsin/arccos/arctan
 - exp/exp2/exp10/expm1
 - log/log2/log10/log1p
 - sinh/cosh/tanh
