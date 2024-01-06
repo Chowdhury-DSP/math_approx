@@ -1,5 +1,6 @@
 #pragma once
 
+#include "basic_math.hpp"
 #include "log_approx.hpp"
 
 namespace math_approx
@@ -55,11 +56,9 @@ template <int order, typename T>
 constexpr T asinh (T x)
 {
     using S = scalar_of_t<T>;
-    using std::abs;
-    using std::sqrt;
+    using std::abs, std::sqrt;
 #if defined(XSIMD_HPP)
-    using xsimd::abs;
-    using xsimd::sqrt;
+    using xsimd::abs, xsimd::sqrt;
 #endif
 
     const auto sign = select (x > (S) 0, (T) (S) 1, select (x < (S) 0, (T) (S) -1, (T) (S) 0));
@@ -76,4 +75,18 @@ constexpr T asinh (T x)
 
     return sign * y;
 }
-} // namespace math_approx
+
+template <int order, typename T>
+constexpr T acosh (T x)
+{
+    using S = scalar_of_t<T>;
+    using std::sqrt;
+#if defined(XSIMD_HPP)
+    using xsimd::sqrt;
+#endif
+
+    const auto z0 = x - (S) 1;
+    const auto z1 = z0 + sqrt (z0 + z0 + z0 * z0);
+    return log1p<order> (z1);
+}
+}

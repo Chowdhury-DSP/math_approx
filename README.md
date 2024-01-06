@@ -9,7 +9,7 @@ Currently supported:
 - exp/exp2/exp10/expm1
 - log/log2/log10/log1p
 - sinh/cosh/tanh
-- arcsinh
+- arcsinh/arccosh/
 - sigmoid
 - Wright-Omega function
 - Dilogarithm function
