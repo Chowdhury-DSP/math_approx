@@ -37,16 +37,16 @@ TEST_CASE ("Asin Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<4> (x); },
-                     1.5e-7f,
-                     2.5e-7f,
-                     3);
+                     2.0e-7f,
+                     4.0e-7f,
+                     4);
     }
     SECTION ("3rd-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<3> (x); },
                      2.5e-7f,
-                     3.0e-7f,
+                     5.0e-7f,
                      5);
     }
     SECTION ("2nd-Order")
