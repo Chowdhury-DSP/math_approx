@@ -5,6 +5,7 @@
 Currently supported:
 
 - sin/cos/tan
+- arcsin/arccos
 - exp/exp2/exp10/expm1
 - log/log2/log10/log1p
 - sinh/cosh/tanh
@@ -42,6 +43,13 @@ This library uses three approaches for measuring accuracy:
 - Absolute error (`Error = |actual - approx|`)
 - Relative error (`Error = |(actual - approx) / actual|`)
 - [ULP Distance](https://en.wikipedia.org/wiki/Unit_in_the_last_place#:~:text=In%20computer%20science%20and%20numerical,of%20accuracy%20in%20numeric%20calculations.)
+
+### Single vs. Double Precision
+
+At the moment, the approximations in this library have been
+primarily tested with single-precision floating-point numbers.
+It is possible (maybe even likely) that most of the approximations
+do not achieve sufficient accuracy for double-precision computations.
 
 ### SIMD
 
