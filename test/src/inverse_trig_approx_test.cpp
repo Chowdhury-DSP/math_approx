@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <math_approx/math_approx.hpp>
-/*
+
 TEST_CASE ("Asin Approx Test")
 {
 #if ! defined(WIN32)
@@ -120,7 +120,7 @@ TEST_CASE ("Acos Approx Test")
                      5.0e-3f);
     }
 }
-*/
+
 TEST_CASE ("Atan Approx Test")
 {
 #if ! defined(WIN32)
