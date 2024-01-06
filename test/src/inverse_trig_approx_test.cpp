@@ -33,76 +33,36 @@ TEST_CASE ("Asin Approx Test")
             REQUIRE (max_ulp_error < ulp_bound);
     };
 
-    SECTION ("11th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<11> (x); },
-                     2.5e-7f,
-                     5.0e-7f,
-                     8);
-    }
-    SECTION ("10th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<10> (x); },
-                     2.5e-7f,
-                     1.5e-6f,
-                     22);
-    }
-    SECTION ("9th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<9> (x); },
-                     4.0e-7f,
-                     4.5e-6f,
-                     72);
-    }
-    SECTION ("8th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<8> (x); },
-                     8.0e-7f,
-                     1.5e-5f,
-                     250);
-    }
-    SECTION ("7th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<7> (x); },
-                     3.0e-6f,
-                     5.0e-5f,
-                     0);
-    }
-    SECTION ("6th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<6> (x); },
-                     1.5e-5f,
-                     2.0e-4f,
-                     0);
-    }
-    SECTION ("5th-Order")
-    {
-        test_approx ([] (auto x)
-                     { return math_approx::asin<5> (x); },
-                     5.5e-5f,
-                     5.0e-4f,
-                     0);
-    }
     SECTION ("4th-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<4> (x); },
-                     3.0e-4f,
-                     2.0e-3f,
-                     0);
+                     1.5e-7f,
+                     2.5e-7f,
+                     3);
     }
     SECTION ("3rd-Order")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<3> (x); },
-                     2.0e-3f,
-                     6.0e-3f,
+                     2.5e-7f,
+                     3.0e-7f,
+                     5);
+    }
+    SECTION ("2nd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::asin<2> (x); },
+                     2.0e-6f,
+                     4.0e-6f,
+                     50);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::asin<1> (x); },
+                     4.0e-5f,
+                     6.5e-5f,
                      0);
     }
 }
