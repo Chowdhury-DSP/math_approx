@@ -16,20 +16,22 @@ namespace inv_trig_detail
         {
             return (S) 0.16443531037029196495 + x * (S) 0.097419577664394046979;
         }
-        if constexpr (order == 2)
+        else if constexpr (order == 2)
         {
             return (S) 0.16687742065041710759 + x * ((S) 0.070980446338571381859 + x * (S) 0.066682760821292624831);
         }
-        if constexpr (order == 3)
+        else if constexpr (order == 3)
         {
             return (S) 0.16665080061757006624 + x * ((S) 0.075508850204912977833 + x * ((S) 0.039376231206556484843 + x * (S) 0.051275338699694958389));
         }
-        if constexpr (order == 4)
+        else if constexpr (order == 4)
         {
             return (S) 0.16666803275183153521 + x * ((S) 0.074936964020844071266 + x * ((S) 0.045640288439217274741 + x * ((S) 0.023435504410713306478 + x * (S) 0.043323710842752508055)));
         }
-
-        return {};
+        else
+        {
+            return {};
+        }
     }
 
     template <int order, typename T>
@@ -42,24 +44,26 @@ namespace inv_trig_detail
         {
             return (S) 0.061454830783555181029 + x * (S) 0.50934149601134137697;
         }
-        if constexpr (order == 2)
+        else if constexpr (order == 2)
         {
             return (S) 0.18188825560430002537 + x * ((S) -0.092825628092384385170 + x * (S) 0.48173369928298098719);
         }
-        if constexpr (order == 3)
+        else if constexpr (order == 3)
         {
             return (S) 0.16480511788348814473 + x * ((S) 0.11286070199090997290 + x * ((S) -0.18795205899643871450 + x * (S) 0.48108256591693704385));
         }
-        if constexpr (order == 4)
+        else if constexpr (order == 4)
         {
             return (S) 0.16687235373875186628 + x * ((S) 0.068412956842158992310 + x * ((S) 0.11466969910945928879 + x * ((S) -0.27433862418620241774 + x * (S) 0.49517994129072917531)));
         }
-        if constexpr (order == 5)
+        else if constexpr (order == 5)
         {
             return (S) 0.16664924406383360700 + x * ((S) 0.075837825275592588015 + x * ((S) 0.030665158374004904823 + x * ((S) 0.13572846625592635550 + x * ((S) -0.34609357317006372856 + x * (S) 0.50800920599560273061))));
         }
-
-        return {};
+        else
+        {
+            return {};
+        }
     }
 } // namespace asin_detail
 
