@@ -66,3 +66,57 @@ TEST_CASE ("Asin Approx Test")
                      0);
     }
 }
+
+TEST_CASE ("Acos Approx Test")
+{
+#if ! defined(WIN32)
+    const auto all_floats = test_helpers::all_32_bit_floats (-1.0f, 1.0f, 1.0e-2f);
+#else
+    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+#endif
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
+                                                    { return std::acos (x); });
+
+    const auto test_approx = [&all_floats, &y_exact] (auto&& f_approx, float err_bound)
+    {
+        const auto y_approx = test_helpers::compute_all<float> (all_floats, f_approx);
+
+        const auto error = test_helpers::compute_error<float> (y_exact, y_approx);
+
+        const auto max_error = test_helpers::abs_max<float> (error);
+
+        std::cout << max_error << std::endl;
+        REQUIRE (std::abs (max_error) < err_bound);
+    };
+
+    SECTION ("5th-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::acos<5> (x); },
+                     5.0e-7f);
+    }
+    SECTION ("4th-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::acos<4> (x); },
+                     1.0e-6f);
+    }
+    SECTION ("3rd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::acos<3> (x); },
+                     1.5e-5f);
+    }
+    SECTION ("2nd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::acos<2> (x); },
+                     2.5e-4f);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::acos<1> (x); },
+                     5.0e-3f);
+    }
+}

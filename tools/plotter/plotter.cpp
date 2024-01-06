@@ -58,11 +58,6 @@ void plot_function (std::span<const float> all_floats,
 
 #define FLOAT_FUNC(func) [] (float x) { return func (x); }
 
-float asin_xsimd (float x)
-{
-    return xsimd::asin (xsimd::broadcast (x)).get (0);
-}
-
 int main()
 {
     plt::figure();
@@ -70,10 +65,10 @@ int main()
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::asin));
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((asin_xsimd) ), "asin-xsimd");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::asin<4>) ), "asin-4");
-    // plot_function (all_floats, FLOAT_FUNC ((math_approx::asin<4>) ), "asin-4");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::acos));
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((acos_xsimd) ), "acos-xsimd");
+    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::acos<4>) ), "acos-4");
+    // plot_function (all_floats, FLOAT_FUNC ((math_approx::acos<4>) ), "acos-4");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

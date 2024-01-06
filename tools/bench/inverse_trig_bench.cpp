@@ -31,6 +31,13 @@ TRIG_BENCH (asin_approx3, math_approx::asin<3>)
 TRIG_BENCH (asin_approx2, math_approx::asin<2>)
 TRIG_BENCH (asin_approx1, math_approx::asin<1>)
 
+TRIG_BENCH (acos_std, std::acos)
+TRIG_BENCH (acos_approx5, math_approx::acos<5>)
+TRIG_BENCH (acos_approx4, math_approx::acos<4>)
+TRIG_BENCH (acos_approx3, math_approx::acos<3>)
+TRIG_BENCH (acos_approx2, math_approx::acos<2>)
+TRIG_BENCH (acos_approx1, math_approx::acos<1>)
+
 #define TRIG_SIMD_BENCH(name, func) \
 void name (benchmark::State& state) \
 { \
@@ -51,5 +58,12 @@ TRIG_SIMD_BENCH (asin_simd_approx4, math_approx::asin<4>)
 TRIG_SIMD_BENCH (asin_simd_approx3, math_approx::asin<3>)
 TRIG_SIMD_BENCH (asin_simd_approx2, math_approx::asin<2>)
 TRIG_SIMD_BENCH (asin_simd_approx1, math_approx::asin<1>)
+
+TRIG_SIMD_BENCH (acos_xsimd, xsimd::acos)
+TRIG_SIMD_BENCH (acos_simd_approx5, math_approx::acos<5>)
+TRIG_SIMD_BENCH (acos_simd_approx4, math_approx::acos<4>)
+TRIG_SIMD_BENCH (acos_simd_approx3, math_approx::acos<3>)
+TRIG_SIMD_BENCH (acos_simd_approx2, math_approx::acos<2>)
+TRIG_SIMD_BENCH (acos_simd_approx1, math_approx::acos<1>)
 
 BENCHMARK_MAIN();
