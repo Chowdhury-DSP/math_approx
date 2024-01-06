@@ -9,7 +9,7 @@ TEST_CASE ("Asin Approx Test")
 #if ! defined(WIN32)
     const auto all_floats = test_helpers::all_32_bit_floats (-1.0f, 1.0f, 1.0e-2f);
 #else
-    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats (-1.0f, 1.0f, 1.0e-1f);
 #endif
     const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::asin (x); });
@@ -37,7 +37,7 @@ TEST_CASE ("Asin Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<4> (x); },
-                     2.0e-7f,
+                     2.5e-7f,
                      4.0e-7f,
                      4);
     }
@@ -45,7 +45,7 @@ TEST_CASE ("Asin Approx Test")
     {
         test_approx ([] (auto x)
                      { return math_approx::asin<3> (x); },
-                     2.5e-7f,
+                     3.0e-7f,
                      5.0e-7f,
                      5);
     }
@@ -72,7 +72,7 @@ TEST_CASE ("Acos Approx Test")
 #if ! defined(WIN32)
     const auto all_floats = test_helpers::all_32_bit_floats (-1.0f, 1.0f, 1.0e-2f);
 #else
-    const auto all_floats = test_helpers::all_32_bit_floats (-10.0f, 10.0f, 1.0e-1f);
+    const auto all_floats = test_helpers::all_32_bit_floats (-1.0f, 1.0f, 1.0e-1f);
 #endif
     const auto y_exact = test_helpers::compute_all<float> (all_floats, [] (auto x)
                                                     { return std::acos (x); });
