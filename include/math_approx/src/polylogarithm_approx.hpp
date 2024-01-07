@@ -156,6 +156,7 @@ constexpr T li2 (T x)
     return r + select (sign, li2_reduce, -li2_reduce);
 }
 
+#if defined(XSIMD_HPP)
 /**
  * Approximation of the "dilogarithm" function for all inputs.
  *
@@ -218,4 +219,5 @@ xsimd::batch<T> li2 (const xsimd::batch<T>& x)
     const auto li2_reduce = li2_0_half<order> (y);
     return r + select (sign, li2_reduce, -li2_reduce);
 }
+#endif
 } // namespace math_approx

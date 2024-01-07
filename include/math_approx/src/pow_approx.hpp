@@ -148,7 +148,7 @@ constexpr float pow (float x)
     const auto f = x - (float) l;
     const auto vi = (l + 127) << 23;
 
-    return std::bit_cast<float> (vi) * pow_detail::pow2_approx<float, order, C1_continuous> (f);
+    return bit_cast<float> (vi) * pow_detail::pow2_approx<float, order, C1_continuous> (f);
 }
 
 /** approximation for pow(Base, x) (64-bit) */
@@ -162,7 +162,7 @@ constexpr double pow (double x)
     const auto d = x - (double) l;
     const auto vi = (l + 1023) << 52;
 
-    return std::bit_cast<double> (vi) * pow_detail::pow2_approx<double, order, C1_continuous> (d);
+    return bit_cast<double> (vi) * pow_detail::pow2_approx<double, order, C1_continuous> (d);
 }
 
 #if defined(XSIMD_HPP)

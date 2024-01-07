@@ -71,4 +71,28 @@ xsimd::batch<T> select (xsimd::batch_bool<T> q, xsimd::batch<T> t, xsimd::batch<
     return xsimd::select (q, t, f);
 }
 #endif
+
+#if ! __cpp_lib_bit_cast
+// bit_cast requirement.
+template <typename From, typename To>
+using is_bitwise_castable = std::integral_constant<bool,
+                                                   (sizeof (From) == sizeof (To)) && std::is_trivially_copyable<From>::value && std::is_trivially_copyable<To>::value>;
+
+// compiler support is needed for bitwise copy with constexpr.
+template <typename To, typename From>
+inline typename std::enable_if<is_bitwise_castable<From, To>::value, To>::type bit_cast (const From& from) noexcept
+{
+    union U
+    {
+        U() {};
+        char storage[sizeof (To)] {};
+        typename std::remove_const<To>::type dest;
+    } u; // instead of To dest; because To doesn't require DefaultConstructible.
+    std::memcpy (&u.dest, &from, sizeof from);
+    return u.dest;
+}
+#else
+using std::bit_cast;
+#endif
+
 } // namespace math_approx

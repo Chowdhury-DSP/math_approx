@@ -105,11 +105,11 @@ namespace log_detail
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
 constexpr float log (float x)
 {
-    const auto vi = std::bit_cast<int32_t> (x);
+    const auto vi = bit_cast<int32_t> (x);
     const auto ex = vi & 0x7f800000;
     const auto e = (ex >> 23) - 127;
     const auto vfi = (vi - ex) | 0x3f800000;
-    const auto vf = std::bit_cast<float> (vfi);
+    const auto vf = bit_cast<float> (vfi);
 
     constexpr auto log2_base_r = 1.0f / Base::log2_base;
     return log2_base_r * ((float) e + Log2ProviderType::template log2_approx<float, order, C1_continuous> (vf));
@@ -119,11 +119,11 @@ constexpr float log (float x)
 template <typename Base, int order, bool C1_continuous, typename Log2ProviderType = log_detail::Log2Provider>
 constexpr double log (double x)
 {
-    const auto vi = std::bit_cast<int64_t> (x);
+    const auto vi = bit_cast<int64_t> (x);
     const auto ex = vi & 0x7ff0000000000000;
     const auto e = (ex >> 52) - 1023;
     const auto vfi = (vi - ex) | 0x3ff0000000000000;
-    const auto vf = std::bit_cast<double> (vfi);
+    const auto vf = bit_cast<double> (vfi);
 
     constexpr auto log2_base_r = 1.0 / Base::log2_base;
     return log2_base_r * ((double) e + Log2ProviderType::template log2_approx<double, order, C1_continuous> (vf));
