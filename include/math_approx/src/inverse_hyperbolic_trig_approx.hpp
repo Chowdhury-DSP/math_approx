@@ -89,4 +89,11 @@ constexpr T acosh (T x)
     const auto z1 = z0 + sqrt (z0 + z0 + z0 * z0);
     return log1p<order> (z1);
 }
+
+template <int order, typename T>
+constexpr T atanh (T x)
+{
+    using S = scalar_of_t<T>;
+    return (S) 0.5 * log<order> (((S) 1 + x) / ((S) 1 - x));
+}
 }

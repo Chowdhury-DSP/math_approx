@@ -84,3 +84,35 @@ TEMPLATE_TEST_CASE ("Acosh Approx Test", "", float, double)
                      6.5e-4f);
     }
 }
+
+TEMPLATE_TEST_CASE ("Atanh Approx Test", "", float, double)
+{
+    const auto all_floats = test_helpers::all_32_bit_floats<TestType> (-0.9999f, 0.9999f, 1.0e-2f);
+    const auto y_exact = test_helpers::compute_all<TestType> (all_floats, [] (auto x)
+                                                    { return std::atanh (x); });
+
+    SECTION ("6th-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::atanh<6> (x); },
+                     2.5e-6f);
+    }
+    SECTION ("5th-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::atanh<5> (x); },
+                     6.5e-6f);
+    }
+    SECTION ("4th-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::atanh<4> (x); },
+                     4.5e-5f);
+    }
+    SECTION ("3th-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::atanh<3> (x); },
+                     3.5e-4f);
+    }
+}
