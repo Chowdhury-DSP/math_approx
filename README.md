@@ -51,6 +51,12 @@ primarily tested with single-precision floating-point numbers.
 It is possible (maybe even likely) that most of the approximations
 do not achieve sufficient accuracy for double-precision computations.
 
+### C++ Standard
+
+The library has been mostly developed and tested with C++20, with
+a little bit of effort to provide compatibility with C++17.
+Personally, I would rather not extend support to C++14 or earlier.
+
 ### SIMD
 
 These approximations are intended to work for both scalar floating-point
@@ -59,3 +65,13 @@ the library is set up to be compatible with the [XSIMD library](https://github.c
 That said, I would like to make it as easy as possible to use this
 library with other SIMD libraries (or matrix math libraries), so if
 anyone has some suggestions, please let me know!
+
+### Constexpr
+
+The majority of the approximations in this library are implemented
+so as to be constexpr-compatible. That said, there are some
+approximations that are only constexpr if the compiler supports
+`std::bit_cast` (typically C++20 and later), and some that cannot
+be made constexpr because they depend on `std::sqrt`. If someone
+knows of any portable constexpr-compatible implementations of these
+methods, I would be happy to add them to the library!
