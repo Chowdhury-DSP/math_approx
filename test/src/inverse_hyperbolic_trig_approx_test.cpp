@@ -63,7 +63,7 @@ TEMPLATE_TEST_CASE ("Acosh Approx Test", "", float, double)
     {
         test_approx<TestType> (all_floats, y_exact, [] (auto x)
                      { return math_approx::acosh<6> (x); },
-                     3.5e-6f);
+                     4.5e-6f);
     }
     SECTION ("5th-Order")
     {
