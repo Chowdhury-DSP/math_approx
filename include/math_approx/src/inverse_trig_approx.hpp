@@ -6,6 +6,8 @@ namespace math_approx
 {
 namespace inv_trig_detail
 {
+    // for polynomial derivations, see notebooks/asin_acos_approx.nb
+
     template <int order, typename T>
     constexpr T asin_kernel (T x)
     {
@@ -66,6 +68,8 @@ namespace inv_trig_detail
         }
     }
 
+    // for polynomial derivations, see notebooks/arctan_approx.nb
+
     template <int order, typename T>
     constexpr T atan_kernel (T x)
     {
@@ -100,6 +104,11 @@ namespace inv_trig_detail
     }
 } // namespace inv_trig_detail
 
+/**
+ * Approximation of asin(x) using asin(x) ≈ p(x^2) * x^3 + x for x in [0, 0.5],
+ * and asin(x) ≈ pi/2 - p((1-x)/2) * ((1-x)/2)^3/2 + ((1-x)/2)^1/2 for x in [0.5, 1],
+ * where p(x) is a polynomial fit to achieve the minimum absolute error.
+ */
 template <int order, typename T>
 T asin (T x)
 {
@@ -123,6 +132,10 @@ T asin (T x)
     return select (x > (S) 0, res, -res);
 }
 
+/**
+ * Approximation of acos(x) using the same approach as asin(x),
+ * but with a different polynomial fit.
+ */
 template <int order, typename T>
 T acos (T x)
 {
@@ -146,6 +159,10 @@ T acos (T x)
     return (S) M_PI_2 - select (x > (S) 0, res, -res);
 }
 
+/**
+ * Approximation of atan(x) using a polynomial approximation of arctan(x) on [0, 1],
+ * and atan(x) = pi/2 - arctan(1/x) for x > 1.
+ */
 template <int order, typename T>
 T atan (T x)
 {

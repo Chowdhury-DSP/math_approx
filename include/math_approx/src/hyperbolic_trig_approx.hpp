@@ -53,7 +53,7 @@ constexpr auto sinh_cosh (T x)
 
 namespace tanh_detail
 {
-    // These polynomial fits were generated from: https://www.wolframcloud.com/obj/chowdsp/Published/tanh_approx.nb
+    // See notebooks/tanh_approx.nb for the derivation of these polynomials
 
     template <typename T>
     constexpr T tanh_poly_11 (T x)
@@ -111,6 +111,10 @@ namespace tanh_detail
     }
 } // namespace tanh_detail
 
+/**
+ * Approximation of tanh(x), using tanh(x) ≈ p(x) / (p(x)^2 + 1),
+ * where p(x) is an odd polynomial fit to minimize the maxinimum relative error.
+ */
 template <int order, typename T>
 T tanh (T x)
 {

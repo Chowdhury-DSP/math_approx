@@ -7,6 +7,8 @@ namespace math_approx
 {
 struct AsinhLog2Provider
 {
+    // for polynomial derivations, see notebooks/asinh_approx.nb
+
     /** approximation for log2(x), optimized on the range [1, 2], to be used within an asinh(x) computation */
     template <typename T, int order, bool /*C1_continuous*/>
     static constexpr T log2_approx (T x)
@@ -76,6 +78,10 @@ constexpr T asinh (T x)
     return sign * y;
 }
 
+/**
+ * Approximation of acosh(x) in the full range, using identity
+ * acosh(x) = log(x + sqrt(x^2 - 1)).
+ */
 template <int order, typename T>
 constexpr T acosh (T x)
 {
@@ -85,15 +91,18 @@ constexpr T acosh (T x)
     using xsimd::sqrt;
 #endif
 
-    const auto z0 = x - (S) 1;
-    const auto z1 = z0 + sqrt (z0 + z0 + z0 * z0);
-    return log1p<order> (z1);
+    const auto z1 = x + sqrt (x * x - (S) 1);
+    return log<order> (z1);
 }
 
+/**
+ * Approximation of atanh(x), using identity
+ * atanh(x) = (1/2) log((x + 1) / (x - 1)).
+ */
 template <int order, typename T>
 constexpr T atanh (T x)
 {
     using S = scalar_of_t<T>;
     return (S) 0.5 * log<order> (((S) 1 + x) / ((S) 1 - x));
 }
-}
+} // namespace math_approx

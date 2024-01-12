@@ -12,6 +12,8 @@ namespace math_approx
  * Orders higher than 3 are generally not recommended for
  * single-precision floating-point types, since they don't
  * improve the accuracy very much.
+ *
+ * For derivations, see notebooks/li2_approx.nb
  */
 template <int order, typename T>
 constexpr T li2_0_half (T x)

@@ -20,9 +20,15 @@ struct scalar_of
 {
     using type = T;
 };
+
+/**
+ * When T is a scalar floating-point type, scalar_of_t<T> is T.
+ * When T is a SIMD floating-point type, scalar_of_t<T> is the corresponding scalar type.
+ */
 template <typename T>
 using scalar_of_t = typename scalar_of<T>::type;
 
+/** Inverse square root */
 template <typename T>
 T rsqrt (T x)
 {
@@ -40,6 +46,7 @@ T rsqrt (T x)
     //    return x * r;
 }
 
+/** Function interface for the ternary operator. */
 template <typename T>
 T select (bool q, T t, T f)
 {
@@ -53,6 +60,7 @@ struct scalar_of<xsimd::batch<T>>
     using type = T;
 };
 
+/** Inverse square root */
 template <typename T>
 xsimd::batch<T> rsqrt (xsimd::batch<T> x)
 {
@@ -65,6 +73,7 @@ xsimd::batch<T> rsqrt (xsimd::batch<T> x)
     return x * r;
 }
 
+/** Function interface for the ternary operator. */
 template <typename T>
 xsimd::batch<T> select (xsimd::batch_bool<T> q, xsimd::batch<T> t, xsimd::batch<T> f)
 {
@@ -94,5 +103,4 @@ inline typename std::enable_if<is_bitwise_castable<From, To>::value, To>::type b
 #else
 using std::bit_cast;
 #endif
-
 } // namespace math_approx

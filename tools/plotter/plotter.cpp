@@ -61,12 +61,12 @@ void plot_function (std::span<const float> all_floats,
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-0.99f, 0.99f);
+    const auto range = std::make_pair (1.0f, 10.0f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::atanh));
-    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::atanh<5>) ), "atanh_log-5");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::acosh));
+    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::acosh<5>) ), "acosh-5");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

@@ -4,6 +4,16 @@
 
 namespace math_approx
 {
+/**
+ * Approximation of the Wright-Omega function, using
+ * w(x) ≈ 0 for x < -3
+ * w(x) ≈ p(x) for -3 <= x < e
+ * w(x) ≈ x - log(x) + alpha * exp(-beta * x) for x >= e,
+ * where p(x) is a polynomial, and alpha and beta are coefficients,
+ * all fit to minimize the maximum absolute error.
+ *
+ * The above fit is optionally followed by some number of Newton-Raphson iterations.
+ */
 template <int num_nr_iters, int poly_order = 3, int log_order = (num_nr_iters <= 1 ? 3 : 4), int exp_order = log_order, typename T>
 constexpr T wright_omega (T x)
 {

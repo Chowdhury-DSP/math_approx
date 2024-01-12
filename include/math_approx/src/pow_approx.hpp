@@ -6,6 +6,8 @@ namespace math_approx
 {
 namespace pow_detail
 {
+    // for polynomial derivations, see notebooks/exp_approx.nb
+
     /** approximation for 2^x, optimized on the range [0, 1] */
     template <typename T, int order, bool C1_continuous>
     constexpr T pow2_approx (T x)
@@ -199,24 +201,28 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
 #pragma GCC diagnostic pop // end ignore strict-aliasing warnings
 #endif
 
+/** Approximation of exp(x), using exp(x) = 2^floor(x * log2(e)) * 2^frac(x * log2(e)) */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T exp (T x)
 {
     return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/** Approximation of exp2(x), using exp(x) = 2^floor(x) * 2^frac(x) */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T exp2 (T x)
 {
     return pow<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/** Approximation of exp(x), using exp10(x) = 2^floor(x * log2(10)) * 2^frac(x * log2(10)) */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T exp10 (T x)
 {
     return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/** Approximation of exp(1) - 1, using math_approx::exp(x) */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T expm1 (T x)
 {

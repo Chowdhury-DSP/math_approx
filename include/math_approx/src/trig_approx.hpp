@@ -48,6 +48,8 @@ namespace trig_detail
         return select (x >= (T) 0, mod, mod + pi) - half_pi;
     }
 
+    // for polynomial derivations, see notebooks/sin_approx.nb
+
     template <typename T>
     constexpr T sin_poly_9 (T x, T x_sq)
     {
@@ -79,6 +81,7 @@ namespace trig_detail
     }
 } // namespace sin_detail
 
+/** Polynomial approximation of sin(x) on the range [-pi, pi] */
 template <int order, typename T>
 constexpr T sin_mpi_pi (T x)
 {
@@ -100,12 +103,17 @@ constexpr T sin_mpi_pi (T x)
     return (pi_sq - x_sq) * x_poly;
 }
 
+/** Full range approximation of sin(x) */
 template <int order, typename T>
 constexpr T sin (T x)
 {
     return sin_mpi_pi<order, T> (trig_detail::fast_mod_mpi_pi (x));
 }
 
+/**
+ * Polynomial approximation of cos(x) on the range [-pi, pi],
+ * using a range-shifted approximation of sin(x).
+ */
 template <int order, typename T>
 constexpr T cos_mpi_pi (T x)
 {
@@ -136,17 +144,20 @@ constexpr T cos_mpi_pi (T x)
     return (pi_sq - hpmx_sq) * x_poly;
 }
 
+/** Full range approximation of cos(x) */
 template <int order, typename T>
 constexpr T cos (T x)
 {
     return cos_mpi_pi<order, T> (trig_detail::fast_mod_mpi_pi (x));
 }
 
-/** Approximation of tan(x) on the range [-pi/4, pi/4] */
+/** Polynomial approximation of tan(x) on the range [-pi/4, pi/4] */
 template <int order, typename T>
 constexpr T tan_mquarterpi_quarterpi (T x)
 {
     static_assert (order % 2 == 1 && order >= 3 && order <= 15, "Order must be an odd number within [3, 15]");
+
+    // for polynomial derivation, see notebooks/tan_approx.nb
 
     using S = scalar_of_t<T>;
     const auto x_sq = x * x;
@@ -217,7 +228,8 @@ constexpr T tan_mquarterpi_quarterpi (T x)
 }
 
 /**
- * Approximation of tan(x) on the range [-pi/2, pi/2]
+ * Approximation of tan(x) on the range [-pi/2, pi/2],
+ * using the tangent half-angle formula.
  *
  * Accuracy may suffer as x approaches ±pi/2.
  */

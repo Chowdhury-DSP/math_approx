@@ -9,6 +9,8 @@ namespace log_detail
 {
     struct Log2Provider
     {
+        // for polynomial derivations, see notebooks/log_approx.nb
+
         /** approximation for log2(x), optimized on the range [1, 2] */
         template <typename T, int order, bool C1_continuous>
         static constexpr T log2_approx (T x)
@@ -163,24 +165,37 @@ xsimd::batch<double> log (xsimd::batch<double> x)
 #pragma GCC diagnostic pop // end ignore strict-aliasing warnings
 #endif
 
+/**
+ * Approximation of log(x), using
+ * log(x) = (1 / log2(e)) * (Exponent(x) + log2(1 + Mantissa(x))
+ */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T log (T x)
 {
     return log<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/**
+ * Approximation of log2(x), using
+ * log2(x) = Exponent(x) + log2(1 + Mantissa(x)
+ */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T log2 (T x)
 {
     return log<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/**
+ * Approximation of log10(x), using
+ * log10(x) = (1 / log2(10)) * (Exponent(x) + log2(1 + Mantissa(x))
+ */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T log10 (T x)
 {
     return log<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
 }
 
+/** Approximation of log(1 + x), using math_approx::log(x) */
 template <int order, bool C1_continuous = false, typename T>
 constexpr T log1p (T x)
 {

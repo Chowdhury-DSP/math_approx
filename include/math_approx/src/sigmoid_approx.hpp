@@ -6,7 +6,7 @@ namespace math_approx
 {
 namespace sigmoid_detail
 {
-    // These polynomial fits were generated from: https://www.wolframcloud.com/obj/chowdsp/Published/sigmoid_approx.nb
+    // for polynomial derivations, see notebooks/sigmoid_approx.nb
 
     template <typename T>
     constexpr T sig_poly_9 (T x)
@@ -51,6 +51,11 @@ namespace sigmoid_detail
     }
 } // namespace sigmoid_detail
 
+/**
+ * Approximation of sigmoid(x) := 1 / (1 + e^-x),
+ * using sigmoid(x) ≈ (1/2) p(x) / (p(x)^2 + 1) + (1/2),
+ * where p(x) is an odd polynomial fit to minimize the maxinimum relative error.
+ */
 template <int order, typename T>
 T sigmoid (T x)
 {
