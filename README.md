@@ -1,5 +1,7 @@
 # math_approx
 
+[![Test](https://github.com/Chowdhury-DSP/math_approx/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Chowdhury-DSP/math_approx/actions/workflows/run_tests.yml)
+
 `math_approx` is a C++ library for math approximations.
 
 Currently supported:
@@ -75,3 +77,10 @@ approximations that are only constexpr if the compiler supports
 be made constexpr because they depend on `std::sqrt`. If someone
 knows of any portable constexpr-compatible implementations of these
 methods, I would be happy to add them to the library!
+
+## License
+
+`math_approx` is open source, and is licensed under the
+BSD 3-clause license.
+
+Enjoy!
