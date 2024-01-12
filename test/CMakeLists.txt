@@ -12,6 +12,7 @@ function(setup_catch_test target)
             Catch2::Catch2WithMain
             math_approx
     )
+    target_compile_features(${target} PUBLIC cxx_std_20)
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
         $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
