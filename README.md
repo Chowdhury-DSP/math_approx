@@ -2,6 +2,7 @@
 
 [![Test](https://github.com/Chowdhury-DSP/math_approx/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Chowdhury-DSP/math_approx/actions/workflows/run_tests.yml)
 
+
 `math_approx` is a C++ library for math approximations.
 
 Currently supported:
@@ -15,9 +16,6 @@ Currently supported:
 - sigmoid
 - Wright-Omega function
 - Dilogarithm function
-
-Showing my work:
-TODO
 
 At the moment, most of these implementations have been "good enough"
 for my own use cases (both in terms of performance and accuracy). That
@@ -38,6 +36,20 @@ arguments which control the "order" of the approximation. The
 "order" typically refers to the order of a polynomial used in
 the approximation. In general, higher-order approximations will
 achieve greater accuracy, while taking longer to compute.
+
+### Showing My Work
+
+Since the approximations in this library are primarily based on
+polynomial approximations, I've tried to provide the details
+for how those polynomials were derived, by providing a zipped
+folder containing the Mathematica notebooks that were used to
+derive the polynomials. Since not everyone has access to
+Mathematica, the folder also contains a PDF version of the
+notebook. At the moment, I'm planning to upload an updated
+copy of the zipped folder with each release of the library,
+but if I can think of a better method of distribution, that
+doesn't involve adding the notebook files to the repository
+directly, I'll do that instead.
 
 ### Measuring Accuracy
 
