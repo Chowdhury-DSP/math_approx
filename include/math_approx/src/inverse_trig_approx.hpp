@@ -161,7 +161,7 @@ T acos (T x)
 
 /**
  * Approximation of atan(x) using a polynomial approximation of arctan(x) on [0, 1],
- * and atan(x) = pi/2 - arctan(1/x) for x > 1.
+ * and arctan(x) = pi/2 - arctan(1/x) for x > 1.
  */
 template <int order, typename T>
 T atan (T x)
