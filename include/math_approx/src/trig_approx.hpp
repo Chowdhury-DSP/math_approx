@@ -48,7 +48,9 @@ namespace trig_detail
         return select (x >= (T) 0, mod, mod + pi) - half_pi;
     }
 
-    // for polynomial derivations, see notebooks/sin_approx.nb
+    // Polynomials were derived using the method presented in
+    // https://mooooo.ooo/chebyshev-sine-approximation/
+    // and then adapted for various (odd) orders.
 
     template <typename T>
     constexpr T sin_poly_9 (T x, T x_sq)

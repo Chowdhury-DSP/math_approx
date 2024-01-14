@@ -13,9 +13,9 @@ Currently supported:
 - log/log2/log10/log1p
 - sinh/cosh/tanh
 - arcsinh/arccosh/arctanh
-- sigmoid
-- Wright-Omega function
-- Dilogarithm function
+- [Sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function)
+- [Wright-Omega function](https://en.wikipedia.org/wiki/Wright_omega_function)
+- [Dilogarithm function](https://en.wikipedia.org/wiki/Dilogarithm)
 
 At the moment, most of these implementations have been "good enough"
 for my own use cases (both in terms of performance and accuracy). That
@@ -26,6 +26,33 @@ approximations, either by:
 - Modifying an approximation to achieve better performance with the same (or similar) accuracy
 
 then please get in touch with a GitHub issue or pull request!
+
+## Usage
+
+### With CMake
+
+`math_approx` is set up as a CMake `INTERFACE` library. To use it as
+such, you'll need to add the following to your `CMakeLists.txt` file:
+
+```cmake
+add_subdirectory(math_approx)
+target_link_libraries(<your_target> math_approx)
+```
+
+And then in your C++ code, you can use the approximations like so:
+
+```cpp
+#include <math_approx/math_approx.hpp>
+
+constexpr auto sin_half = math_approx::sin<5> (0.5f);
+```
+
+### Without CMake
+
+To use `math_approx` without CMake, you'll need to add
+`/path/to/repo/include` to your include path. If you're
+compiling your program with MSVC, you may also need to
+add the pre-processor definition `_USE_MATH_DEFINES`.
 
 ## A few other thoughts
 
@@ -44,7 +71,7 @@ polynomial approximations, I've tried to provide the details
 for how those polynomials were derived, by providing a zipped
 folder containing the Mathematica notebooks that were used to
 derive the polynomials. Since not everyone has access to
-Mathematica, the folder also contains a PDF version of the
+Mathematica, the folder also contains a PDF version of each
 notebook. At the moment, I'm planning to upload an updated
 copy of the zipped folder with each release of the library,
 but if I can think of a better method of distribution, that
