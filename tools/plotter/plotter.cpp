@@ -56,17 +56,24 @@ void plot_function (std::span<const float> all_floats,
     plt::named_plot<float, float> (name, all_floats, y_approx);
 }
 
+template <typename T>
+T sigmoid_ref (T x)
+{
+    return (T) 1 / ((T) 1 + std::exp (-x));
+}
+
 #define FLOAT_FUNC(func) [] (float x) { return func (x); }
 
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (1.0f, 10.0f);
+    const auto range = std::make_pair (-10.0f, 10.0f);
     static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::acosh));
-    plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::acosh<5>) ), "acosh-5");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sigmoid_ref));
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid_exp<5, true>) ), "sigmoid_exp-5_c1");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid_exp<6, true>) ), "sigmoid_exp-6_c1");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

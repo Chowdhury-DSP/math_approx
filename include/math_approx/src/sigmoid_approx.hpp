@@ -75,11 +75,18 @@ T sigmoid (T x)
     return (S) 0.5 * x_poly * rsqrt (x_poly * x_poly + (S) 1) + (S) 0.5;
 }
 
-// So far this has tested slower than the above approx (for equivalent error),
-// but maybe it will be useful for someone!
-// template <int order, typename T>
-// T sigmoid_exp (T x)
-// {
-//     return (T) 1 / ((T) 1 + math_approx::exp<order> (-x));
-// }
+
+/**
+ * Approximation of sigmoid(x) := 1 / (1 + e^-x),
+ * using math_approx::exp (x).
+ *
+ * So far this has tested slower than the above approximation
+ * for similar absolute error, but has better relative error
+ * characteristics.
+ */
+template <int order, bool C1_continuous = false, typename T>
+T sigmoid_exp (T x)
+{
+    return (T) 1 / ((T) 1 + math_approx::exp<order, C1_continuous> (-x));
+}
 } // namespace math_approx
