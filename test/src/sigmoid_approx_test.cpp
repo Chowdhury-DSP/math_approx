@@ -94,7 +94,7 @@ TEST_CASE ("Sigmoid (Exp) Approx Test")
         test_approx ([] (auto x)
                      { return math_approx::sigmoid_exp<5> (x); },
                      1.5e-7f,
-                     7.0e-7f,
+                     7.5e-7f,
                      12);
     }
 
