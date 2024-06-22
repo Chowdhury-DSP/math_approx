@@ -11,6 +11,7 @@
 #include <cmath>
 #endif
 
+#include <algorithm>
 #include <bit>
 
 namespace math_approx
