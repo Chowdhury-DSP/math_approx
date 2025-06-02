@@ -263,11 +263,26 @@ namespace trig_turns_detail
     template <typename T>
     constexpr T fast_mod_mhalf_half (T x)
     {
-        using std::nearbyint;
-#if defined(XSIMD_HPP)
-        using xsimd::nearbyint;
-#endif
-        return x - nearbyint (x); // @TODO: nearbyint is apparently very slow?
+        // auto y =_mm_round_ss (_mm_load_ps1(&x), _mm_load_ps1(&x), 12);
+        // // auto y =_mm_round_ss (__m128{}, _mm_load_ps1(&x), 12);
+        // return x - reinterpret_cast<float&> (y);
+
+        // _asm {
+        //     roundss xmm1, xmm0, 12
+        //     subss   xmm0, xmm1
+        //     ret
+        // }
+
+        using S = scalar_of_t<T>;
+        x += 0.5f;
+        const auto mod = x - truncate (x);
+        return select (x >= (T) 0, mod, mod + 1.0f) - 0.5f;
+
+//         using std::nearbyint;
+// #if defined(XSIMD_HPP)
+//         using xsimd::nearbyint;
+// #endif
+//         return x - nearbyint (x); // @TODO: nearbyint is apparently very slow?
     }
 }
 
@@ -289,9 +304,9 @@ constexpr T sin_turns_mhalfpi_halfpi (T x)
     const auto y = x * x_1_3_5_7_9;
 
 
-    // return y * (x + 0.5f) * (x - 0.5f);
-    return y * (x_sq - 0.25f);
- //    -25.1327351251 x + 64.8346168010 x^3 - 67.0380336036 x^5 +
+    return y * (x + 0.5f) * (x - 0.5f);
+    // return y * (x_sq - 0.25f); // this costs us a lot of precision :(
+ // -25.1327351251 x + 64.8346168010 x^3 - 67.0380336036 x^5 +
  // 38.0636285939 x^7 - 12.0736625515 x^9
  //     x + 64.8346168 x^3 - 67.0380336 x^5 + 38.0636286 x^7 -
  // 12.0736626 x^9

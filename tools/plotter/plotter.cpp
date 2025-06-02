@@ -73,9 +73,12 @@ T std_sin_turns (T x)
 
 int main()
 {
-    // std::cout << math_approx::sin_turns_mhalfpi_halfpi<9> (0.0f) << '\n';
-    // std::cout << math_approx::sin_turns_mhalfpi_halfpi<9> (0.5f) << '\n';
-    // std::cout << math_approx::sin_turns_mhalfpi_halfpi<9> (-0.5f) << '\n';
+    std::cout << sincospi::sin2pi (0.0f) << '\n';
+    std::cout << sincospi::sin2pi (0.5f) << '\n';
+    std::cout << sincospi::sin2pi (-0.5f) << '\n';
+    std::cout << math_approx::sin_turns<9> (0.0f) << '\n';
+    std::cout << math_approx::sin_turns<9> (0.5f) << '\n';
+    std::cout << math_approx::sin_turns<9> (-0.5f) << '\n';
 
     // const auto tt = sincospi::sin2pi (0.5f);
     // const auto dd = math_approx::sin_turns_mhalfpi_halfpi<9> (0.5f);
@@ -84,9 +87,10 @@ int main()
     // std::cout << err.front()  << '\n';
 
     plt::figure();
-    const auto range = std::make_pair (-0.5f, 0.5f);
+    const auto range = std::make_pair (-0.5f, 0.49f);
     static constexpr auto tol = 4.0e-3f;
 
+    // std::vector<float> all_floats { -0.5f, -0.49999f, -0.49f, 0.0f, 0.49f, 0.4999999999f, 0.5f };
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
     const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::sin2pi));
     // plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
