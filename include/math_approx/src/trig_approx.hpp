@@ -253,4 +253,29 @@ constexpr T tan (T x)
 {
     return tan_mhalfpi_halfpi<order> (trig_detail::fast_mod_mhalfpi_halfpi (x));
 }
+
+/** Polynomial approximation of sin(2*pi*x) on the range [-pi/2, pi/2] */
+template <int order, typename T>
+constexpr T sin_turns_mhalfpi_halfpi (T x)
+{
+    // static_assert (order % 2 == 1 && order >= 3 && order <= 15, "Order must be an odd number within [3, 15]");
+
+    // for polynomial derivation, see notebooks/tan_approx.nb
+
+    using S = scalar_of_t<T>;
+    const auto x_sq = x * x;
+    const auto x_q = x_sq * x_sq;
+    const auto x_7_9 = (S) 38.0636285939f - (S) 12.0736625515f * x_sq;
+    const auto x_3_5 = (S) 64.8346168010f - (S) 67.0380336036f * x_sq;
+    const auto x_3_5_7_9 = x_3_5 + x_7_9 * x_q;
+    const auto x_1_3_5_7_9 = (S) -25.1327351251f + x_3_5_7_9 * x_sq;
+    const auto y = x * x_1_3_5_7_9;
+
+
+    return y * (x + 0.5f) * (x - 0.5f); // (x_sq - 0.25f);
+ //    -25.1327351251 x + 64.8346168010 x^3 - 67.0380336036 x^5 +
+ // 38.0636285939 x^7 - 12.0736625515 x^9
+ //     x + 64.8346168 x^3 - 67.0380336 x^5 + 38.0636286 x^7 -
+ // 12.0736626 x^9
+}
 } // namespace math_approx
