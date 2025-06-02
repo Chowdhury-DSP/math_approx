@@ -254,6 +254,23 @@ constexpr T tan (T x)
     return tan_mhalfpi_halfpi<order> (trig_detail::fast_mod_mhalfpi_halfpi (x));
 }
 
+//===============================================================================
+namespace trig_turns_detail
+{
+    using namespace trig_detail;
+
+    /** Fast method to wrap a value into the range [-pi, pi] */
+    template <typename T>
+    constexpr T fast_mod_mhalf_half (T x)
+    {
+        using std::nearbyint;
+#if defined(XSIMD_HPP)
+        using xsimd::nearbyint;
+#endif
+        return x - nearbyint (x); // @TODO: nearbyint is apparently very slow?
+    }
+}
+
 /** Polynomial approximation of sin(2*pi*x) on the range [-pi/2, pi/2] */
 template <int order, typename T>
 constexpr T sin_turns_mhalfpi_halfpi (T x)
@@ -272,10 +289,20 @@ constexpr T sin_turns_mhalfpi_halfpi (T x)
     const auto y = x * x_1_3_5_7_9;
 
 
-    return y * (x + 0.5f) * (x - 0.5f); // (x_sq - 0.25f);
+    // return y * (x + 0.5f) * (x - 0.5f);
+    return y * (x_sq - 0.25f);
  //    -25.1327351251 x + 64.8346168010 x^3 - 67.0380336036 x^5 +
  // 38.0636285939 x^7 - 12.0736625515 x^9
  //     x + 64.8346168 x^3 - 67.0380336 x^5 + 38.0636286 x^7 -
  // 12.0736626 x^9
+}
+
+/**
+ * Full-range approximation of sin(2*pi*x)
+ */
+template <int order, typename T>
+constexpr T sin_turns (T x)
+{
+    return sin_turns_mhalfpi_halfpi<order> (trig_turns_detail::fast_mod_mhalf_half (x));
 }
 } // namespace math_approx

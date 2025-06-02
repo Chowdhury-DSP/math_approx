@@ -1,5 +1,7 @@
 .idea/
 .vscode/
+.focus-config
+*.raddbg_project
 
 build*/
 *.zip
