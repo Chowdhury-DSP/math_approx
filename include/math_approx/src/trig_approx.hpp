@@ -302,7 +302,7 @@ constexpr T sin_turns_mhalfpi_halfpi (T x)
         const auto x_q = x_sq * x_sq;
         const auto x_9_11 = (S) -14.0496638478f + (S) 3.16160207407f * x_sq;
         const auto x_5_7 = (S) -67.0766273790f + (S) 38.4958788775f * x_sq;
-        const auto x_1_3 = (S) -25.1327411554 + (S) 64.8358228565f * x_sq;
+        const auto x_1_3 = (S) -25.1327411554f + (S) 64.8358228565f * x_sq;
         const auto x_5_7_9_11 = x_5_7 + x_9_11 * x_q;
         const auto x_1_3_5_7_9_11 = x_1_3 + x_5_7_9_11 * x_q;
         y = x * x_1_3_5_7_9_11;
