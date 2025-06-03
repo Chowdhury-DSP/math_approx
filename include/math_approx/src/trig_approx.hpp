@@ -263,6 +263,7 @@ namespace trig_turns_detail
     template <typename T>
     constexpr T fast_mod_mhalf_half (T x)
     {
+        // @TODO: test this on Intel...
         // auto y =_mm_round_ss (_mm_load_ps1(&x), _mm_load_ps1(&x), 12);
         // // auto y =_mm_round_ss (__m128{}, _mm_load_ps1(&x), 12);
         // return x - reinterpret_cast<float&> (y);
@@ -273,16 +274,16 @@ namespace trig_turns_detail
         //     ret
         // }
 
-        using S = scalar_of_t<T>;
-        x += 0.5f;
-        const auto mod = x - truncate (x);
-        return select (x >= (T) 0, mod, mod + 1.0f) - 0.5f;
+        // using S = scalar_of_t<T>;
+        // x += (S) 0.5;
+        // const auto mod = x - truncate (x);
+        // return select (x >= (T) 0, mod, mod + (S) 1) - (S) 0.5;
 
-//         using std::nearbyint;
-// #if defined(XSIMD_HPP)
-//         using xsimd::nearbyint;
-// #endif
-//         return x - nearbyint (x); // @TODO: nearbyint is apparently very slow?
+        using std::nearbyint;
+#if defined(XSIMD_HPP)
+        using xsimd::nearbyint;
+#endif
+        return x - nearbyint (x);
     }
 }
 
@@ -290,26 +291,50 @@ namespace trig_turns_detail
 template <int order, typename T>
 constexpr T sin_turns_mhalfpi_halfpi (T x)
 {
-    // static_assert (order % 2 == 1 && order >= 3 && order <= 15, "Order must be an odd number within [3, 15]");
-
-    // for polynomial derivation, see notebooks/tan_approx.nb
+    static_assert (order % 2 == 1 && order <= 11 && order >= 5, "Order must be an odd number within [5, 11]");
 
     using S = scalar_of_t<T>;
     const auto x_sq = x * x;
-    const auto x_q = x_sq * x_sq;
-    const auto x_7_9 = (S) 38.0636285939f - (S) 12.0736625515f * x_sq;
-    const auto x_3_5 = (S) 64.8346168010f - (S) 67.0380336036f * x_sq;
-    const auto x_3_5_7_9 = x_3_5 + x_7_9 * x_q;
-    const auto x_1_3_5_7_9 = (S) -25.1327351251f + x_3_5_7_9 * x_sq;
-    const auto y = x * x_1_3_5_7_9;
-
+    T y;
+    if constexpr (order == 11)
+    {
+        // -25.1327411554 x + 64.8358228565 x^3 - 67.0766273790 x^5 + 38.4958788775 x^7 - 14.0496638478 x^9 + 3.16160207407
+        const auto x_q = x_sq * x_sq;
+        const auto x_9_11 = (S) -14.0496638478f + (S) 3.16160207407f * x_sq;
+        const auto x_5_7 = (S) -67.0766273790f + (S) 38.4958788775f * x_sq;
+        const auto x_1_3 = (S) -25.1327411554 + (S) 64.8358228565f * x_sq;
+        const auto x_5_7_9_11 = x_5_7 + x_9_11 * x_q;
+        const auto x_1_3_5_7_9_11 = x_1_3 + x_5_7_9_11 * x_q;
+        y = x * x_1_3_5_7_9_11;
+    }
+    else if constexpr (order == 9)
+    {
+        const auto x_q = x_sq * x_sq;
+        const auto x_7_9 = (S) 38.0636285939f - (S) 12.0736625515f * x_sq;
+        const auto x_3_5 = (S) 64.8346168010f - (S) 67.0380336036f * x_sq;
+        const auto x_3_5_7_9 = x_3_5 + x_7_9 * x_q;
+        const auto x_1_3_5_7_9 = (S) -25.1327351251f + x_3_5_7_9 * x_sq;
+        y = x * x_1_3_5_7_9;
+    }
+    else if constexpr (order == 7)
+    {
+        // -25.1323666662 x + 64.7874540567 x^3 - 66.0947787168 x^5 + 32.0267973181 x^7
+        const auto x_q = x_sq * x_sq;
+        const auto x_5_7 = (S) -66.0947787168f + (S) 32.0267973181f * x_sq;
+        const auto x_1_3 = (S) -25.1323666662f + (S) 64.7874540567f * x_sq;
+        const auto x_1_3_5_7 = x_1_3 + x_5_7 * x_q;
+        y = x * x_1_3_5_7;
+    }
+    else if constexpr (order == 5)
+    {
+        // -25.1167285815 x + 63.6615119634 x^3 - 54.0847297225 x^5
+        const auto x_3_5 = (S) 63.6615119634f + (S) -54.0847297225f * x_sq;
+        const auto x_1_3_5 = (S) -25.1167285815f + x_3_5 * x_sq;
+        y = x * x_1_3_5;
+    }
 
     return y * (x + 0.5f) * (x - 0.5f);
     // return y * (x_sq - 0.25f); // this costs us a lot of precision :(
- // -25.1327351251 x + 64.8346168010 x^3 - 67.0380336036 x^5 +
- // 38.0636285939 x^7 - 12.0736625515 x^9
- //     x + 64.8346168 x^3 - 67.0380336 x^5 + 38.0636286 x^7 -
- // 12.0736626 x^9
 }
 
 /**
