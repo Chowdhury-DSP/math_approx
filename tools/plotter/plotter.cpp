@@ -73,29 +73,16 @@ T std_sin_turns (T x)
 
 int main()
 {
-    std::cout << sincospi::sin2pi (0.0f) << '\n';
-    std::cout << sincospi::sin2pi (0.5f) << '\n';
-    std::cout << sincospi::sin2pi (-0.5f) << '\n';
-    std::cout << math_approx::sin_turns<9> (0.0f) << '\n';
-    std::cout << math_approx::sin_turns<9> (0.5f) << '\n';
-    std::cout << math_approx::sin_turns<9> (-0.5f) << '\n';
-
-    // const auto tt = sincospi::sin2pi (0.5f);
-    // const auto dd = math_approx::sin_turns_mhalfpi_halfpi<9> (0.5f);
-    // std::cout << tt << ' ' << dd << '\n';
-    // const auto err = test_helpers::compute_ulp_error ({ &tt, 1 }, { &dd, 1 });
-    // std::cout << err.front()  << '\n';
-
     plt::figure();
     const auto range = std::make_pair (-0.5f, 0.5f);
     static constexpr auto tol = 1.0e-3f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::sin2pi));
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::cos2pi));
     // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<5>) ), "sint-5");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<7>) ), "sint-7");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<11>) ), "sint-11");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<7>) ), "sint-7");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::cos_turns<11>) ), "cost-11");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

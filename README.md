@@ -8,6 +8,7 @@
 Currently supported:
 
 - sin/cos/tan
+- sin(2*pi*x)/cos(2*pi*x)
 - arcsin/arccos/arctan
 - exp/exp2/exp10/expm1
 - log/log2/log10/log1p

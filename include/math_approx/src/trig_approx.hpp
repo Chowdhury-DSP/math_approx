@@ -345,4 +345,25 @@ constexpr T sin_turns (T x)
 {
     return sin_turns_mhalfpi_halfpi<order> (trig_turns_detail::fast_mod_mhalf_half (x));
 }
+
+/** Polynomial approximation of cos(2*pi*x) on the range [-pi/2, pi/2] */
+template <int order, typename T>
+constexpr T cos_turns_mhalfpi_halfpi (T x)
+{
+    using S = scalar_of_t<T>;
+    using std::abs;
+#if defined(XSIMD_HPP)
+    using xsimd::abs;
+#endif
+    return sin_turns_mhalfpi_halfpi<order> ((S) 0.25 - abs (x));
+}
+
+/**
+ * Full-range approximation of cos(2*pi*x)
+ */
+template <int order, typename T>
+constexpr T cos_turns (T x)
+{
+    return cos_turns_mhalfpi_halfpi<order> (trig_turns_detail::fast_mod_mhalf_half (x));
+}
 } // namespace math_approx
