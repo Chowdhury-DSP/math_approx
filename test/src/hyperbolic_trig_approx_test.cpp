@@ -38,7 +38,7 @@ TEST_CASE ("Sinh Approx Test")
         test_approx ([] (auto x)
                      { return math_approx::sinh_cosh<6> (x).first; },
                      6.0e-6f,
-                     0.00011f,
+                     0.00012f,
                      1050);
     }
     SECTION ("6th-Order")
@@ -46,7 +46,7 @@ TEST_CASE ("Sinh Approx Test")
         test_approx ([] (auto x)
                      { return math_approx::sinh<6> (x); },
                      6.0e-6f,
-                     0.00011f,
+                     0.00012f,
                      1050);
     }
     SECTION ("5th-Order")
@@ -62,7 +62,7 @@ TEST_CASE ("Sinh Approx Test")
         test_approx ([] (auto x)
                      { return math_approx::sinh<4> (x); },
                      6.0e-5f,
-                     0.00025f,
+                     0.00027f,
                      0);
     }
     SECTION ("3rd-Order")

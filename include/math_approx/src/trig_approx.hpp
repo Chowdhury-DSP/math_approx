@@ -81,7 +81,7 @@ namespace trig_detail
         const auto x_1_3_5 = (S) 0.101256629587 + x_3_5 * x_sq;
         return x * x_1_3_5;
     }
-} // namespace sin_detail
+} // namespace trig_detail
 
 /** Polynomial approximation of sin(x) on the range [-pi, pi] */
 template <int order, typename T>
@@ -216,7 +216,7 @@ constexpr T tan_mquarterpi_quarterpi (T x)
         const auto x_8 = x_q * x_q;
         const auto x_13_15 = (S) 0.000292958045126 + (S) 0.00427933470414 * x_sq;
         const auto x_9_11 = (S) 0.0213477960960 + (S) 0.0106702896251 * x_sq;
-        const auto x_5_7 = (S) 0.133327796402 + (S) 0.0540469276103* x_sq;
+        const auto x_5_7 = (S) 0.133327796402 + (S) 0.0540469276103 * x_sq;
         const auto x_1_3 = (S) 1 + (S) 0.333333463757 * x_sq;
         const auto x_9_11_13_15 = x_9_11 + x_13_15 * x_q;
         const auto x_1_3_5_7 = x_1_3 + x_5_7 * x_q;
@@ -252,5 +252,118 @@ template <int order, typename T>
 constexpr T tan (T x)
 {
     return tan_mhalfpi_halfpi<order> (trig_detail::fast_mod_mhalfpi_halfpi (x));
+}
+
+//===============================================================================
+namespace trig_turns_detail
+{
+    using namespace trig_detail;
+
+    /** Fast method to wrap a value into the range [-pi, pi] */
+    template <typename T>
+    constexpr T fast_mod_mhalf_half (T x)
+    {
+        if constexpr (std::is_same_v<T, float>)
+        {
+#if defined(__SSE4_1__) || defined(_MSC_VER)
+            auto y = _mm_round_ss (_mm_load_ps1 (&x), _mm_load_ps1 (&x), 12);
+            return x - reinterpret_cast<float&> (y);
+#else
+            using std::nearbyint;
+#if defined(XSIMD_HPP)
+            using xsimd::nearbyint;
+#endif
+            return x - nearbyint (x);
+#endif
+        }
+        else
+        {
+            using std::nearbyint;
+#if defined(XSIMD_HPP)
+            using xsimd::nearbyint;
+#endif
+            return x - nearbyint (x);
+        }
+    }
+} // namespace trig_turns_detail
+
+/** Polynomial approximation of sin(2*pi*x) on the range [-pi/2, pi/2] */
+template <int order, typename T>
+constexpr T sin_turns_mhalfpi_halfpi (T x)
+{
+    static_assert (order % 2 == 1 && order <= 11 && order >= 5, "Order must be an odd number within [5, 11]");
+
+    using S = scalar_of_t<T>;
+    const auto x_sq = x * x;
+    T y;
+    if constexpr (order == 11)
+    {
+        // -25.1327411554 x + 64.8358228565 x^3 - 67.0766273790 x^5 + 38.4958788775 x^7 - 14.0496638478 x^9 + 3.16160207407
+        const auto x_q = x_sq * x_sq;
+        const auto x_9_11 = (S) -14.0496638478f + (S) 3.16160207407f * x_sq;
+        const auto x_5_7 = (S) -67.0766273790f + (S) 38.4958788775f * x_sq;
+        const auto x_1_3 = (S) -25.1327411554f + (S) 64.8358228565f * x_sq;
+        const auto x_5_7_9_11 = x_5_7 + x_9_11 * x_q;
+        const auto x_1_3_5_7_9_11 = x_1_3 + x_5_7_9_11 * x_q;
+        y = x * x_1_3_5_7_9_11;
+    }
+    else if constexpr (order == 9)
+    {
+        const auto x_q = x_sq * x_sq;
+        const auto x_7_9 = (S) 38.0636285939f - (S) 12.0736625515f * x_sq;
+        const auto x_3_5 = (S) 64.8346168010f - (S) 67.0380336036f * x_sq;
+        const auto x_3_5_7_9 = x_3_5 + x_7_9 * x_q;
+        const auto x_1_3_5_7_9 = (S) -25.1327351251f + x_3_5_7_9 * x_sq;
+        y = x * x_1_3_5_7_9;
+    }
+    else if constexpr (order == 7)
+    {
+        // -25.1323666662 x + 64.7874540567 x^3 - 66.0947787168 x^5 + 32.0267973181 x^7
+        const auto x_q = x_sq * x_sq;
+        const auto x_5_7 = (S) -66.0947787168f + (S) 32.0267973181f * x_sq;
+        const auto x_1_3 = (S) -25.1323666662f + (S) 64.7874540567f * x_sq;
+        const auto x_1_3_5_7 = x_1_3 + x_5_7 * x_q;
+        y = x * x_1_3_5_7;
+    }
+    else if constexpr (order == 5)
+    {
+        // -25.1167285815 x + 63.6615119634 x^3 - 54.0847297225 x^5
+        const auto x_3_5 = (S) 63.6615119634f + (S) -54.0847297225f * x_sq;
+        const auto x_1_3_5 = (S) -25.1167285815f + x_3_5 * x_sq;
+        y = x * x_1_3_5;
+    }
+
+    return y * (x + 0.5f) * (x - 0.5f);
+    // return y * (x_sq - 0.25f); // this costs us a lot of precision :(
+}
+
+/**
+ * Full-range approximation of sin(2*pi*x)
+ */
+template <int order, typename T>
+constexpr T sin_turns (T x)
+{
+    return sin_turns_mhalfpi_halfpi<order> (trig_turns_detail::fast_mod_mhalf_half (x));
+}
+
+/** Polynomial approximation of cos(2*pi*x) on the range [-pi/2, pi/2] */
+template <int order, typename T>
+constexpr T cos_turns_mhalfpi_halfpi (T x)
+{
+    using S = scalar_of_t<T>;
+    using std::abs;
+#if defined(XSIMD_HPP)
+    using xsimd::abs;
+#endif
+    return sin_turns_mhalfpi_halfpi<order> ((S) 0.25 - abs (x));
+}
+
+/**
+ * Full-range approximation of cos(2*pi*x)
+ */
+template <int order, typename T>
+constexpr T cos_turns (T x)
+{
+    return cos_turns_mhalfpi_halfpi<order> (trig_turns_detail::fast_mod_mhalf_half (x));
 }
 } // namespace math_approx

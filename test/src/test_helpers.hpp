@@ -57,7 +57,7 @@ inline std::vector<T> compute_rel_error (std::span<const T> actual, std::span<co
     std::vector<T> err;
     err.resize (actual.size());
     for (size_t i = 0; i < actual.size(); ++i)
-        err[i] = (actual[i] - approx[i]) / actual[i];
+        err[i] = (actual[i] - approx[i]) / (actual[i] + std::numeric_limits<float>::epsilon());
     return err;
 }
 

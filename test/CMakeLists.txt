@@ -1,6 +1,6 @@
 message(STATUS "math_approx -- Configuring tests...")
 
-CPMAddPackage("gh:catchorg/Catch2@3.2.1")
+CPMAddPackage("gh:catchorg/Catch2@3.8.1")
 include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 
 function(setup_catch_test target)
@@ -13,10 +13,11 @@ function(setup_catch_test target)
             math_approx
     )
     target_compile_features(${target} PUBLIC cxx_std_20)
-    target_compile_options(${target} PRIVATE
-        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
-    )
+    target_compile_definitions(${target} PUBLIC _USE_MATH_DEFINES=1)
+     target_compile_options(${target} PRIVATE
+         $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+         $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+     )
 
     add_custom_command(TARGET ${target}
         POST_BUILD
@@ -30,6 +31,7 @@ function(setup_catch_test target)
 endfunction(setup_catch_test)
 
 setup_catch_test(trig_approx_test)
+setup_catch_test(trig_turns_approx_test)
 setup_catch_test(inverse_trig_approx_test)
 setup_catch_test(pow_approx_test)
 setup_catch_test(log_approx_test)

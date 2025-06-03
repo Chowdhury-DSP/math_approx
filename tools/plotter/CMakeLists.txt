@@ -12,3 +12,4 @@ CPMAddPackage(
 add_executable(math_approx_plotter plotter.cpp)
 target_link_libraries(math_approx_plotter PRIVATE matplotlib-cpp math_approx)
 target_compile_features(math_approx_plotter PUBLIC cxx_std_20)
+target_compile_definitions(math_approx_plotter PUBLIC _USE_MATH_DEFINES=1)

@@ -8,6 +8,7 @@ namespace plt = matplotlibcpp;
 
 #include "../../test/src/reference/polylogarithm.hpp"
 #include "../../test/src/reference/toms917.hpp"
+#include "../../test/src/reference/sincospi.hpp"
 #include "../../test/src/test_helpers.hpp"
 #include <math_approx/math_approx.hpp>
 
@@ -62,18 +63,26 @@ T sigmoid_ref (T x)
     return (T) 1 / ((T) 1 + std::exp (-x));
 }
 
+template <typename T>
+T std_sin_turns (T x)
+{
+    return std::sin ((T) 2 * (T) M_PI * x);
+}
+
 #define FLOAT_FUNC(func) [] (float x) { return func (x); }
 
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-10.0f, 10.0f);
-    static constexpr auto tol = 1.0e-2f;
+    const auto range = std::make_pair (-0.5f, 0.5f);
+    static constexpr auto tol = 1.0e-3f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sigmoid_ref));
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid_exp<5, true>) ), "sigmoid_exp-5_c1");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid_exp<6, true>) ), "sigmoid_exp-6_c1");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::cos2pi));
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<5>) ), "sint-5");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<7>) ), "sint-7");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::cos_turns<11>) ), "cost-11");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);
