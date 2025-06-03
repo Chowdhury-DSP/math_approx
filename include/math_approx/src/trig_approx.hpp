@@ -81,7 +81,7 @@ namespace trig_detail
         const auto x_1_3_5 = (S) 0.101256629587 + x_3_5 * x_sq;
         return x * x_1_3_5;
     }
-} // namespace sin_detail
+} // namespace trig_detail
 
 /** Polynomial approximation of sin(x) on the range [-pi, pi] */
 template <int order, typename T>
@@ -216,7 +216,7 @@ constexpr T tan_mquarterpi_quarterpi (T x)
         const auto x_8 = x_q * x_q;
         const auto x_13_15 = (S) 0.000292958045126 + (S) 0.00427933470414 * x_sq;
         const auto x_9_11 = (S) 0.0213477960960 + (S) 0.0106702896251 * x_sq;
-        const auto x_5_7 = (S) 0.133327796402 + (S) 0.0540469276103* x_sq;
+        const auto x_5_7 = (S) 0.133327796402 + (S) 0.0540469276103 * x_sq;
         const auto x_1_3 = (S) 1 + (S) 0.333333463757 * x_sq;
         const auto x_9_11_13_15 = x_9_11 + x_13_15 * x_q;
         const auto x_1_3_5_7 = x_1_3 + x_5_7 * x_q;
@@ -263,29 +263,29 @@ namespace trig_turns_detail
     template <typename T>
     constexpr T fast_mod_mhalf_half (T x)
     {
-        // @TODO: test this on Intel...
-        // auto y =_mm_round_ss (_mm_load_ps1(&x), _mm_load_ps1(&x), 12);
-        // // auto y =_mm_round_ss (__m128{}, _mm_load_ps1(&x), 12);
-        // return x - reinterpret_cast<float&> (y);
-
-        // _asm {
-        //     roundss xmm1, xmm0, 12
-        //     subss   xmm0, xmm1
-        //     ret
-        // }
-
-        // using S = scalar_of_t<T>;
-        // x += (S) 0.5;
-        // const auto mod = x - truncate (x);
-        // return select (x >= (T) 0, mod, mod + (S) 1) - (S) 0.5;
-
-        using std::nearbyint;
+        if constexpr (std::is_same_v<T, float>)
+        {
+#if defined(__SSE4_1__) || defined(_MSC_VER)
+            auto y = _mm_round_ss (_mm_load_ps1 (&x), _mm_load_ps1 (&x), 12);
+            return x - reinterpret_cast<float&> (y);
+#else
+            using std::nearbyint;
 #if defined(XSIMD_HPP)
-        using xsimd::nearbyint;
+            using xsimd::nearbyint;
 #endif
-        return x - nearbyint (x);
+            return x - nearbyint (x);
+#endif
+        }
+        else
+        {
+            using std::nearbyint;
+#if defined(XSIMD_HPP)
+            using xsimd::nearbyint;
+#endif
+            return x - nearbyint (x);
+        }
     }
-}
+} // namespace trig_turns_detail
 
 /** Polynomial approximation of sin(2*pi*x) on the range [-pi/2, pi/2] */
 template <int order, typename T>
