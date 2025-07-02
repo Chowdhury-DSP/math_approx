@@ -72,6 +72,18 @@ TEMPLATE_TEST_CASE ("Log Approx Test", "", float, double)
                      { return math_approx::log<3, true> (x); },
                      4.0e-3f);
     }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log<2> (x); },
+                     5.5e-3f);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log<1> (x); },
+                     6.5e-2f);
+    }
 }
 
 TEMPLATE_TEST_CASE ("Log2 Approx Test", "", float, double)
@@ -128,6 +140,18 @@ TEMPLATE_TEST_CASE ("Log2 Approx Test", "", float, double)
                      { return math_approx::log2<3, true> (x); },
                      5.5e-3f);
     }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log2<2> (x); },
+                     8.0e-3f);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log2<1> (x); },
+                     9.0e-2f);
+    }
 }
 
 TEMPLATE_TEST_CASE ("Log10 Approx Test", "", float, double)
@@ -183,5 +207,17 @@ TEMPLATE_TEST_CASE ("Log10 Approx Test", "", float, double)
         test_approx<TestType> (all_floats, y_exact, [] (auto x)
                      { return math_approx::log10<3, true> (x); },
                      2.0e-3f);
+    }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log10<2> (x); },
+                     2.5e-3f);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                     { return math_approx::log10<1> (x); },
+                     3.0e-2f);
     }
 }

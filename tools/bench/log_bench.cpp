@@ -29,18 +29,24 @@ LOG_BENCH (log_approx6, math_approx::log<6>)
 LOG_BENCH (log_approx5, math_approx::log<5>)
 LOG_BENCH (log_approx4, math_approx::log<4>)
 LOG_BENCH (log_approx3, math_approx::log<3>)
+LOG_BENCH (log_approx2, math_approx::log<2>)
+LOG_BENCH (log_approx1, math_approx::log<1>)
 
 LOG_BENCH (log2_std, std::log2)
 LOG_BENCH (log2_approx6, math_approx::log2<6>)
 LOG_BENCH (log2_approx5, math_approx::log2<5>)
 LOG_BENCH (log2_approx4, math_approx::log2<4>)
 LOG_BENCH (log2_approx3, math_approx::log2<3>)
+LOG_BENCH (log2_approx2, math_approx::log2<2>)
+LOG_BENCH (log2_approx1, math_approx::log2<1>)
 
 LOG_BENCH (log10_std, std::log10)
 LOG_BENCH (log10_approx6, math_approx::log10<6>)
 LOG_BENCH (log10_approx5, math_approx::log10<5>)
 LOG_BENCH (log10_approx4, math_approx::log10<4>)
 LOG_BENCH (log10_approx3, math_approx::log10<3>)
+LOG_BENCH (log10_approx2, math_approx::log10<2>)
+LOG_BENCH (log10_approx1, math_approx::log10<1>)
 
 #define LOG_SIMD_BENCH(name, func) \
 void name (benchmark::State& state) \
@@ -61,17 +67,23 @@ LOG_SIMD_BENCH (log_simd_approx6, math_approx::log<6>)
 LOG_SIMD_BENCH (log_simd_approx5, math_approx::log<5>)
 LOG_SIMD_BENCH (log_simd_approx4, math_approx::log<4>)
 LOG_SIMD_BENCH (log_simd_approx3, math_approx::log<3>)
+LOG_SIMD_BENCH (log_simd_approx2, math_approx::log<2>)
+LOG_SIMD_BENCH (log_simd_approx1, math_approx::log<1>)
 
 LOG_SIMD_BENCH (log2_xsimd, xsimd::log2)
 LOG_SIMD_BENCH (log2_simd_approx6, math_approx::log2<6>)
 LOG_SIMD_BENCH (log2_simd_approx5, math_approx::log2<5>)
 LOG_SIMD_BENCH (log2_simd_approx4, math_approx::log2<4>)
 LOG_SIMD_BENCH (log2_simd_approx3, math_approx::log2<3>)
+LOG_SIMD_BENCH (log2_simd_approx2, math_approx::log2<2>)
+LOG_SIMD_BENCH (log2_simd_approx1, math_approx::log2<1>)
 
 LOG_SIMD_BENCH (log10_xsimd, xsimd::log10)
 LOG_SIMD_BENCH (log10_simd_approx6, math_approx::log10<6>)
 LOG_SIMD_BENCH (log10_simd_approx5, math_approx::log10<5>)
 LOG_SIMD_BENCH (log10_simd_approx4, math_approx::log10<4>)
 LOG_SIMD_BENCH (log10_simd_approx3, math_approx::log10<3>)
+LOG_SIMD_BENCH (log10_simd_approx2, math_approx::log10<2>)
+LOG_SIMD_BENCH (log10_simd_approx1, math_approx::log10<1>)
 
 BENCHMARK_MAIN();

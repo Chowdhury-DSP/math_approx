@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+.zed/
 .focus-config
 *.raddbg_project
 

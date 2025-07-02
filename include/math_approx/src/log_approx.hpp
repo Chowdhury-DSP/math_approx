@@ -15,12 +15,12 @@ namespace log_detail
         template <typename T, int order, bool C1_continuous>
         static constexpr T log2_approx (T x)
         {
-            static_assert (order >= 3 && order <= 6);
             using S = scalar_of_t<T>;
 
-            const auto x_sq = x * x;
+            [[maybe_unused]] const auto x_sq = x * x;
             if constexpr (C1_continuous)
             {
+                static_assert (order >= 3 && order <= 6);
                 if constexpr (order == 3)
                 {
                     const auto x_2_3 = (S) -1.09886528622 + (S) 0.164042561333 * x;
@@ -58,7 +58,17 @@ namespace log_detail
             }
             else
             {
-                if constexpr (order == 3)
+                static_assert (order >= 1 && order <= 6);
+                if constexpr (order == 1)
+                {
+                    return (S) -1 + x;
+                }
+                else if constexpr (order == 2)
+                {
+                    const auto x_1_2 = (S) 2.03966624422 + (S) -0.346555414741 * x;
+                    return (S) -1.69311082948 + x_1_2 * x;
+                }
+                else if constexpr (order == 3)
                 {
                     const auto x_2_3 = (S) -1.05974531422 + (S) 0.159220010975 * x;
                     const auto x_0_1 = (S) -2.16417056258 + (S) 3.06469586582 * x;

@@ -95,6 +95,20 @@ TEMPLATE_TEST_CASE ("Exp Approx Test", "", float, double)
                                6.5e-4f,
                                0);
     }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<2> (x); },
+                               3.0e-3f,
+                               0);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp<1> (x); },
+                               6.5e-2f,
+                               0);
+    }
 }
 
 TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
@@ -162,6 +176,20 @@ TEMPLATE_TEST_CASE ("Exp2 Approx Test", "", float, double)
                                6.5e-4f,
                                0);
     }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<2> (x); },
+                               3.0e-3f,
+                               0);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp2<1> (x); },
+                               6.5e-2f,
+                               0);
+    }
 }
 
 TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
@@ -227,6 +255,20 @@ TEMPLATE_TEST_CASE ("Exp10 Approx Test", "", float, double)
         test_approx<TestType> (all_floats, y_exact, [] (auto x)
                                { return math_approx::exp10<3, true> (x); },
                                6.5e-4f,
+                               0);
+    }
+    SECTION ("2nd-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<2> (x); },
+                               3.0e-3f,
+                               0);
+    }
+    SECTION ("1st-Order")
+    {
+        test_approx<TestType> (all_floats, y_exact, [] (auto x)
+                               { return math_approx::exp10<1> (x); },
+                               6.5e-2f,
                                0);
     }
 }

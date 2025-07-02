@@ -12,12 +12,12 @@ namespace pow_detail
     template <typename T, int order, bool C1_continuous>
     constexpr T pow2_approx (T x)
     {
-        static_assert (order >= 3 && order <= 7);
         using S = scalar_of_t<T>;
 
-        const auto x_sq = x * x;
+        [[maybe_unused]] const auto x_sq = x * x;
         if constexpr (C1_continuous)
         {
+            static_assert (order >= 3 && order <= 7);
             if constexpr (order == 3)
             {
                 const auto x_2_3 = (S) 0.227411277760 + (S) 0.0794415416798 * x;
@@ -66,7 +66,17 @@ namespace pow_detail
         }
         else
         {
-            if constexpr (order == 3)
+            static_assert (order >= 1 && order <= 7);
+            if constexpr (order == 1)
+            {
+                return (S) 1 + x;
+            }
+            else if constexpr (order == 2)
+            {
+                const auto x_1_2 = (S) 0.660233956811 + (S) 0.339766043189 * x;
+                return (S) 1 + x_1_2 * x;
+            }
+            else if constexpr (order == 3)
             {
                 const auto x_2_3 = (S) 0.226307586882 + (S) 0.0782680256330 * x;
                 const auto x_0_1 = (S) 1 + (S) 0.695424387485 * x;
@@ -140,10 +150,13 @@ namespace pow_detail
 #endif
 
 /** approximation for pow(Base, x) (32-bit) */
-template <typename Base, int order, bool C1_continuous>
+template <typename Base, int order, bool C1_continuous, bool clamp_range>
 constexpr float pow (float x)
 {
-    x = std::max (-126.0f, Base::log2_base * x);
+    x *= Base::log2_base;
+
+    if constexpr (clamp_range)
+        x = std::max (-126.0f, x);
 
     const auto xi = (int32_t) x;
     const auto l = x < 0.0f ? xi - 1 : xi;
@@ -154,10 +167,13 @@ constexpr float pow (float x)
 }
 
 /** approximation for pow(Base, x) (64-bit) */
-template <typename Base, int order, bool C1_continuous>
+template <typename Base, int order, bool C1_continuous, bool clamp_range>
 constexpr double pow (double x)
 {
-    x = std::max (-1022.0, Base::log2_base * x);
+    x *= Base::log2_base;
+
+    if constexpr (clamp_range)
+        x = std::max (-1022.0, x);
 
     const auto xi = (int64_t) x;
     const auto l = x < 0.0 ? xi - 1 : xi;
@@ -169,10 +185,13 @@ constexpr double pow (double x)
 
 #if defined(XSIMD_HPP)
 /** approximation for pow(Base, x) (32-bit SIMD) */
-template <typename Base, int order, bool C1_continuous>
+template <typename Base, int order, bool C1_continuous, bool clamp_range>
 xsimd::batch<float> pow (xsimd::batch<float> x)
 {
-    x = xsimd::max (xsimd::broadcast (-126.0f), Base::log2_base * x);
+    x *= Base::log2_base;
+
+    if constexpr (clamp_range)
+        x = xsimd::max (xsimd::broadcast (-126.0f), x);
 
     const auto xi = xsimd::to_int (x);
     const auto l = xsimd::select (xsimd::batch_bool_cast<int32_t> (x < 0.0f), xi - 1, xi);
@@ -183,10 +202,13 @@ xsimd::batch<float> pow (xsimd::batch<float> x)
 }
 
 /** approximation for pow(Base, x) (64-bit SIMD) */
-template <typename Base, int order, bool C1_continuous>
+template <typename Base, int order, bool C1_continuous, bool clamp_range>
 xsimd::batch<double> pow (xsimd::batch<double> x)
 {
-    x = xsimd::max (-1022.0, Base::log2_base * x);
+    x *= Base::log2_base;
+
+    if constexpr (clamp_range)
+        x = xsimd::max (xsimd::broadcast (-1022.0), x);
 
     const auto xi = xsimd::to_int (x);
     const auto l = xsimd::select (xsimd::batch_bool_cast<int64_t> (x < 0.0), xi - 1, xi);
@@ -202,30 +224,30 @@ xsimd::batch<double> pow (xsimd::batch<double> x)
 #endif
 
 /** Approximation of exp(x), using exp(x) = 2^floor(x * log2(e)) * 2^frac(x * log2(e)) */
-template <int order, bool C1_continuous = false, typename T>
+template <int order, bool C1_continuous = false, bool clamp_range = true, typename T>
 constexpr T exp (T x)
 {
-    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x);
+    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous, clamp_range> (x);
 }
 
 /** Approximation of exp2(x), using exp(x) = 2^floor(x) * 2^frac(x) */
-template <int order, bool C1_continuous = false, typename T>
+template <int order, bool C1_continuous = false, bool clamp_range = true, typename T>
 constexpr T exp2 (T x)
 {
-    return pow<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous> (x);
+    return pow<pow_detail::Base2<scalar_of_t<T>>, order, C1_continuous, clamp_range> (x);
 }
 
 /** Approximation of exp(x), using exp10(x) = 2^floor(x * log2(10)) * 2^frac(x * log2(10)) */
-template <int order, bool C1_continuous = false, typename T>
+template <int order, bool C1_continuous = false, bool clamp_range = true, typename T>
 constexpr T exp10 (T x)
 {
-    return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous> (x);
+    return pow<pow_detail::Base10<scalar_of_t<T>>, order, C1_continuous, clamp_range> (x);
 }
 
 /** Approximation of exp(1) - 1, using math_approx::exp(x) */
-template <int order, bool C1_continuous = false, typename T>
+template <int order, bool C1_continuous = false, bool clamp_range = true, typename T>
 constexpr T expm1 (T x)
 {
-    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous> (x) - (T) 1;
+    return pow<pow_detail::BaseE<scalar_of_t<T>>, order, C1_continuous, clamp_range> (x) - (T) 1;
 }
 }
