@@ -69,20 +69,37 @@ T std_sin_turns (T x)
     return std::sin ((T) 2 * (T) M_PI * x);
 }
 
+float sigmoid3 (float v)
+{
+    constexpr float c1 = 0.03138777F;
+    constexpr float c2 = 0.276281267F;
+    constexpr float c_log2f = 1.44269504089f;
+    v *= c_log2f*0.5;
+    int intPart = (int)v;
+    float x = (v - intPart);
+    float xx = x * x;
+    float v1 = c_log2f + c2 * xx;
+    float v2 = x + xx * c1 * x;
+    float v3 = (v2 + v1);
+    *((int*)&v3) += intPart << 24;
+    float v4 = v2 - v1;
+    float res = v3 / (v3 - v4); //for tanh change to (v3 + v4)/ (v3 - v4)
+    return res;
+}
+
 #define FLOAT_FUNC(func) [] (float x) { return func (x); }
 
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-0.5f, 0.5f);
-    static constexpr auto tol = 1.0e-3f;
+    const auto range = std::make_pair (-10.f, 10.0f);
+    static constexpr auto tol = 1.0e-2f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::cos2pi));
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<5>) ), "sint-5");
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<7>) ), "sint-7");
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::cos_turns<11>) ), "cost-11");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sigmoid_ref));
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((sigmoid3)), "sig-3-ref");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<7>)), "sig-7");
+    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<9>)), "sig-9");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);
