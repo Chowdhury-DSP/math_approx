@@ -97,9 +97,11 @@ int main()
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
     const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sigmoid_ref));
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((sigmoid3)), "sig-3-ref");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((sigmoid3)), "sig-3-ref");
+    // plot_rel_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<2>)), "sig-2");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<3>)), "sig-3");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<5>)), "sig-5");
     plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<7>)), "sig-7");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sigmoid<9>)), "sig-9");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);
