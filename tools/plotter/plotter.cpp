@@ -74,15 +74,14 @@ T std_sin_turns (T x)
 int main()
 {
     plt::figure();
-    const auto range = std::make_pair (-0.5f, 0.5f);
+    const auto range = std::make_pair (-2.0f, 2.0f);
     static constexpr auto tol = 1.0e-3f;
 
     const auto all_floats = test_helpers::all_32_bit_floats (range.first, range.second, tol);
-    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (sincospi::cos2pi));
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<5>) ), "sint-5");
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<7>) ), "sint-7");
-    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::sin_turns<9>) ), "sint-9");
-    plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::cos_turns<11>) ), "cost-11");
+    const auto y_exact = test_helpers::compute_all<float> (all_floats, FLOAT_FUNC (std::atan));
+    // plot_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::atan<2>) ), "atan-2");
+    plot_rel_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::atan<2>) ), "atan-2");
+    // plot_ulp_error (all_floats, y_exact, FLOAT_FUNC ((math_approx::atan<2>) ), "atan-2");
 
     plt::legend ({ { "loc", "upper right" } });
     plt::xlim (range.first, range.second);

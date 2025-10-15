@@ -74,9 +74,13 @@ namespace inv_trig_detail
     constexpr T atan_kernel (T x)
     {
         using S = scalar_of_t<T>;
-        static_assert (order >= 4 && order <= 7);
+        static_assert (order == 2 ||(order >= 4 && order <= 7));
 
-        if constexpr (order == 4)
+        if constexpr (order == 2)
+        {
+            return x / ((S) 1 + x * x * (S) 0.273239544735);
+        }
+        else if constexpr (order == 4)
         {
             const auto x_sq = x * x;
             const auto num = x + x_sq * (S) 0.498001992540;
