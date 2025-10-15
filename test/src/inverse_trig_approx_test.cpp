@@ -174,4 +174,12 @@ TEST_CASE ("Atan Approx Test")
                      8.5e-4f,
                      0);
     }
+    SECTION ("2nd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::atan<2> (x); },
+                     7.0e-3f,
+                     1.5e-2f,
+                     0);
+    }
 }
