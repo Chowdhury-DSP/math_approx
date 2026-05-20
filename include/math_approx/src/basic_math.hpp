@@ -4,7 +4,18 @@
 // the user can still use XSIMD by manually including
 // it before including the math_approx header.
 #if MATH_APPROX_XSIMD_TARGET
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wpedantic"
+#elif defined(_WIN32)
+#pragma warning( push )
+#pragma warning( disable : 4127 )
+#endif
 #include <xsimd/xsimd.hpp>
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#elif defined(_WIN32)
+#pragma warning(pop)
+#endif
 #endif
 
 #if ! defined(XSIMD_HPP)
