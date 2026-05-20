@@ -58,6 +58,13 @@ TEST_CASE ("Sine Approx Test")
                      5.0e-3f,
                      22'000);
     }
+    SECTION ("3rd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::sin_turns<3> (x); },
+                     9.5e-2f,
+                     550'000);
+    }
 }
 
 TEST_CASE ("Cosine Approx Test")
@@ -112,5 +119,12 @@ TEST_CASE ("Cosine Approx Test")
                      { return math_approx::cos_turns<5> (x); },
                      3.0e-3f,
                      14'000);
+    }
+    SECTION ("3rd-Order")
+    {
+        test_approx ([] (auto x)
+                     { return math_approx::cos_turns<3> (x); },
+                     5.0e-2f,
+                     300'000);
     }
 }

@@ -81,13 +81,21 @@ namespace trig_detail
         const auto x_1_3_5 = (S) 0.101256629587 + x_3_5 * x_sq;
         return x * x_1_3_5;
     }
+
+    template <typename T>
+    constexpr T sin_poly_3 (T x, T x_sq)
+    {
+        using S = scalar_of_t<T>;
+        auto x_1_3 = (S) 0.0995531964592 - (S) 0.00512021080931 * x_sq;
+        return x * x_1_3;
+    }
 } // namespace trig_detail
 
 /** Polynomial approximation of sin(x) on the range [-pi, pi] */
 template <int order, typename T>
 constexpr T sin_mpi_pi (T x)
 {
-    static_assert (order % 2 == 1 && order <= 9 && order >= 5, "Order must be an odd number within [5, 9]");
+    static_assert (order % 2 == 1 && order <= 9 && order >= 3, "Order must be an odd number within [3, 9]");
 
     using S = scalar_of_t<T>;
     constexpr auto pi = static_cast<S> (M_PI);
@@ -101,6 +109,8 @@ constexpr T sin_mpi_pi (T x)
         x_poly = trig_detail::sin_poly_7 (x, x_sq);
     else if constexpr (order == 5)
         x_poly = trig_detail::sin_poly_5 (x, x_sq);
+    else if constexpr (order == 3)
+        x_poly = trig_detail::sin_poly_3 (x, x_sq);
 
     return (pi_sq - x_sq) * x_poly;
 }
@@ -119,7 +129,7 @@ constexpr T sin (T x)
 template <int order, typename T>
 constexpr T cos_mpi_pi (T x)
 {
-    static_assert (order % 2 == 1 && order <= 9 && order >= 5, "Order must be an odd number within [5, 9]");
+    static_assert (order % 2 == 1 && order <= 9 && order >= 3, "Order must be an odd number within [3, 9]");
 
     using S = scalar_of_t<T>;
     constexpr auto pi = static_cast<S> (M_PI);
@@ -142,6 +152,8 @@ constexpr T cos_mpi_pi (T x)
         x_poly = trig_detail::sin_poly_7 (hpmx, hpmx_sq);
     else if constexpr (order == 5)
         x_poly = trig_detail::sin_poly_5 (hpmx, hpmx_sq);
+    else if constexpr (order == 3)
+        x_poly = trig_detail::sin_poly_3 (hpmx, hpmx_sq);
 
     return (pi_sq - hpmx_sq) * x_poly;
 }
@@ -291,7 +303,7 @@ namespace trig_turns_detail
 template <int order, typename T>
 constexpr T sin_turns_mhalfpi_halfpi (T x)
 {
-    static_assert (order % 2 == 1 && order <= 11 && order >= 5, "Order must be an odd number within [5, 11]");
+    static_assert (order % 2 == 1 && order <= 11 && order >= 3, "Order must be an odd number within [3, 11]");
 
     using S = scalar_of_t<T>;
     const auto x_sq = x * x;
@@ -331,6 +343,12 @@ constexpr T sin_turns_mhalfpi_halfpi (T x)
         const auto x_3_5 = (S) 63.6615119634f + (S) -54.0847297225f * x_sq;
         const auto x_1_3_5 = (S) -25.1167285815f + x_3_5 * x_sq;
         y = x * x_1_3_5;
+    }
+    else if constexpr (order == 3)
+    {
+        // -24.6941916306 x + 50.1403295328 x^3
+        const auto x_1_3 = (S) -24.6941916306 + (S) 50.1403295328  * x_sq;
+        y = x * x_1_3;
     }
 
     return y * (x + 0.5f) * (x - 0.5f);
