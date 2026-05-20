@@ -5,6 +5,7 @@
 // it before including the math_approx header.
 #if MATH_APPROX_XSIMD_TARGET
 #if defined(__GNUC__)
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #elif defined(_WIN32)
 #pragma warning( push )
